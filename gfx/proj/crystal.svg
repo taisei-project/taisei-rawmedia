@@ -114,7 +114,7 @@
        transform="translate(0,1029.3519)"
        sodipodi:nodetypes="ccccccc" />
     <rect
-       style="opacity:0.681;fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       style="opacity:0.623;fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:none"
        id="rect4189"
        width="5"
        height="10"
@@ -128,7 +128,7 @@
        inkscape:connector-curvature="0"
        transform="translate(0,1029.3519)" />
     <path
-       style="fill:#00ff00;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;opacity:1"
+       style="fill:#00ff00;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;opacity:0.75"
        d="M 5,15 5,20 0,15 z"
        id="path4193"
        inkscape:connector-curvature="0"
