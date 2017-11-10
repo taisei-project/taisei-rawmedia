@@ -10,13 +10,13 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="25.025188"
-   height="25.025188"
+   width="26.693535"
+   height="26.693535"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="plainball.svg"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/proj/plainball.png"
+   inkscape:export-filename="/home/akari/git/taisei/resources/gfx/proj/plainball.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -70,7 +70,8 @@
        fx="10.31934"
        fy="10.034214"
        r="8.4631844"
-       gradientUnits="userSpaceOnUse" />
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.5770385,0,0,1.5770384,-2.6733751,1093.0957)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -79,16 +80,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.627417"
-     inkscape:cx="4.5353443"
-     inkscape:cy="9.736043"
+     inkscape:zoom="32"
+     inkscape:cx="15.044282"
+     inkscape:cy="13.812718"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1038"
+     inkscape:window-width="1918"
+     inkscape:window-height="1158"
      inkscape:window-x="0"
-     inkscape:window-y="-1"
+     inkscape:window-y="20"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -102,7 +103,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -110,16 +111,13 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-0.23798755,-1027.0999)">
-    <path
-       sodipodi:type="arc"
-       style="fill:url(#radialGradient3820);fill-opacity:1;fill-rule:evenodd;stroke:none"
+     transform="translate(-0.25385339,-1095.5732)">
+    <ellipse
+       style="fill:url(#radialGradient3820);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.57703841"
        id="path2985"
-       sodipodi:cx="10.31934"
-       sodipodi:cy="10.034214"
-       sodipodi:rx="8.4631844"
-       sodipodi:ry="8.4631844"
-       d="m 18.782524,10.034214 c 0,4.674088 -3.789097,8.463184 -8.463184,8.463184 -4.6740879,0 -8.4631846,-3.789096 -8.4631846,-8.463184 0,-4.6740876 3.7890967,-8.4631843 8.4631846,-8.4631843 4.674087,0 8.463184,3.7890967 8.463184,8.4631843 z"
-       transform="matrix(1.4784736,0,0,1.4784735,-2.5062892,1024.7772)" />
+       cx="13.600621"
+       cy="1108.92"
+       rx="13.346767"
+       ry="13.346766" />
   </g>
 </svg>

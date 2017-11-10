@@ -10,13 +10,13 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="12"
-   height="12"
+   width="12.8"
+   height="12.8"
    id="svg3824"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="flea.svg"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/proj/flea.png"
+   inkscape:export-filename="/home/akari/git/taisei/resources/gfx/proj/flea.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -70,17 +70,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="31.890516"
-     inkscape:cx="-12.388201"
-     inkscape:cy="3.4420286"
+     inkscape:zoom="45.254834"
+     inkscape:cx="6.1007455"
+     inkscape:cy="5.7999188"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1918"
-     inkscape:window-height="1037"
+     inkscape:window-height="1158"
      inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0"
+     inkscape:window-y="20"
+     inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -91,7 +91,11 @@
        empspacing="5"
        visible="true"
        enabled="true"
-       snapvisiblegridlinesonly="true" />
+       snapvisiblegridlinesonly="true"
+       originx="0"
+       originy="0"
+       spacingx="1.0666667"
+       spacingy="1.0666667" />
   </sodipodi:namedview>
   <metadata
      id="metadata3829">
@@ -109,26 +113,18 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-1037.3519)">
-    <path
-       sodipodi:type="arc"
-       style="fill:#0000ff;fill-opacity:0.884;fill-rule:nonzero;stroke:none"
+     transform="translate(0,-1106.5087)">
+    <circle
+       style="fill:#0000ff;fill-opacity:0.88399999;fill-rule:nonzero;stroke:none;stroke-width:1.58928812"
        id="path4222"
-       sodipodi:cx="4"
-       sodipodi:cy="4"
-       sodipodi:rx="4"
-       sodipodi:ry="4"
-       d="M 8,4 C 8,6.209139 6.209139,8 4,8 1.790861,8 0,6.209139 0,4 0,1.790861 1.790861,0 4,0 6.209139,0 8,1.790861 8,4 z"
-       transform="matrix(1.4899576,0,0,1.4899576,0.0401696,1037.3921)" />
-    <path
-       transform="matrix(0.98824105,0,0,0.98824105,2.0470359,1039.399)"
-       d="M 8,4 C 8,6.209139 6.209139,8 4,8 1.790861,8 0,6.209139 0,4 0,1.790861 1.790861,0 4,0 6.209139,0 8,1.790861 8,4 z"
-       sodipodi:ry="4"
-       sodipodi:rx="4"
-       sodipodi:cy="4"
-       sodipodi:cx="4"
+       cx="6.4000001"
+       cy="1112.9087"
+       r="6.3571525" />
+    <circle
        id="path3772"
-       style="fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:none"
-       sodipodi:type="arc" />
+       style="fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.05412376"
+       cx="6.4000001"
+       cy="1112.9088"
+       r="4.216495" />
   </g>
 </svg>

@@ -9,12 +9,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="13"
-   height="22"
+   width="13.866667"
+   height="23.466667"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="bullet.svg">
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+   sodipodi:docname="bullet.svg"
+   inkscape:export-filename="/home/akari/git/taisei/resources/gfx/proj/bullet.png"
+   inkscape:export-xdpi="81.818176"
+   inkscape:export-ydpi="81.818176">
   <defs
      id="defs4">
     <filter
@@ -24,7 +27,7 @@
        width="1.2961702"
        y="-0.077939533"
        height="1.1558791"
-       color-interpolation-filters="sRGB">
+       style="color-interpolation-filters:sRGB">
       <feGaussianBlur
          inkscape:collect="always"
          stdDeviation="0.61702128"
@@ -38,16 +41,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.075"
-     inkscape:cx="1.2644394"
-     inkscape:cy="14.218009"
+     inkscape:zoom="31.218764"
+     inkscape:cx="11.179995"
+     inkscape:cy="9.3337053"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1061"
+     inkscape:window-width="1918"
+     inkscape:window-height="1158"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="20"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -60,8 +63,10 @@
        visible="true"
        enabled="true"
        snapvisiblegridlinesonly="true"
-       originx="0.5px"
-       originy="1.5000018px" />
+       originx="0.53333333"
+       originy="1.6000019"
+       spacingx="1.0666667"
+       spacingy="1.0666667" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -71,7 +76,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -79,10 +84,10 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0.5,-1031.8622)">
+     transform="translate(0.53333333,-1100.653)">
     <path
-       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#00ff00"
-       d="m 1,1040.3622 c 0,-3.8165 3.3333333,-7 5,-7 1.6666667,0 5,3.1835 5,7 l 0,12 -10,0 z"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#00ff00;stroke-width:1.06666672"
+       d="m 1.0666667,1109.7197 c 0,-4.071 3.5555555,-7.4667 5.3333333,-7.4667 1.7777778,0 5.333333,3.3957 5.333333,7.4667 v 12.8 H 1.0666667 Z"
        id="rect2987"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cscccc" />
@@ -90,13 +95,14 @@
        sodipodi:nodetypes="cscccc"
        inkscape:connector-curvature="0"
        id="path3770"
-       d="m 1,1040.3622 c 0,-3.8165 3.3333333,-7 5,-7 1.6666667,0 5,3.1835 5,7 l 0,12 -10,0 z"
-       style="fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:#00ff00;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none" />
+       d="m 1.0666667,1109.7197 c 0,-4.071 3.5555555,-7.4667 5.3333333,-7.4667 1.7777778,0 5.333333,3.3957 5.333333,7.4667 v 12.8 H 1.0666667 Z"
+       style="fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:#00ff00;stroke-width:3.20000005;stroke-miterlimit:4;stroke-dasharray:none" />
     <path
        style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#filter3852)"
-       d="m 1,1040.3622 c 0,-3.8165 3.3333333,-7 5,-7 1.6666667,0 5,3.1835 5,7 l 0,12 -10,0 z"
+       d="m 1,1040.3622 c 0,-3.8165 3.3333333,-7 5,-7 1.6666667,0 5,3.1835 5,7 v 12 H 1 Z"
        id="path3772"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cscccc" />
+       sodipodi:nodetypes="cscccc"
+       transform="scale(1.0666667)" />
   </g>
 </svg>

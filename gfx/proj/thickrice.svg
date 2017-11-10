@@ -10,13 +10,13 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="10"
-   height="14"
+   width="10.666667"
+   height="14.933333"
    id="svg3824"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="thickrice.svg"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/proj/rice.png"
+   inkscape:export-filename="/home/akari/git/taisei/resources/gfx/proj/thickrice.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -45,7 +45,7 @@
        fx="4.6230597"
        fy="9.7228384"
        r="4.6452327"
-       gradientTransform="matrix(1,0,0,2.0930789,0,-10.627829)"
+       gradientTransform="matrix(1.1481305,0,0,1.6050176,0.02545742,1096.2477)"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
@@ -55,17 +55,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="15.945258"
-     inkscape:cx="0.69844789"
-     inkscape:cy="6.9897004"
+     inkscape:zoom="45.1"
+     inkscape:cx="7.0681143"
+     inkscape:cy="7.6546572"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1918"
-     inkscape:window-height="1037"
+     inkscape:window-height="1158"
      inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0"
+     inkscape:window-y="20"
+     inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -78,7 +78,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -86,16 +86,13 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-1035.3519)">
-    <path
-       sodipodi:type="arc"
-       style="fill:url(#radialGradient4348);fill-opacity:1;fill-rule:evenodd;stroke:none"
+     transform="translate(0,-1104.3754)">
+    <ellipse
+       style="fill:url(#radialGradient4348);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.93830216"
        id="path3832"
-       sodipodi:cx="4.6230597"
-       sodipodi:cy="9.7228384"
-       sodipodi:rx="4.6452327"
-       sodipodi:ry="9.7228384"
-       d="m 9.2682924,9.7228384 c 0,5.3697756 -2.0797415,9.7228386 -4.6452327,9.7228386 -2.5654911,0 -4.64523263,-4.353063 -4.64523263,-9.7228386 C -0.02217293,4.353063 2.0575686,0 4.6230597,0 7.1885509,0 9.2682924,4.353063 9.2682924,9.7228384 z"
-       transform="matrix(1.0763723,0,0,0.71889503,0.02386633,1035.3725)" />
+       cx="5.333333"
+       cy="1111.853"
+       rx="5.333333"
+       ry="7.4556804" />
   </g>
 </svg>
