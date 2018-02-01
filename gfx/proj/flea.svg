@@ -10,15 +10,15 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="12.8"
-   height="12.8"
+   width="12.714305"
+   height="12.714305"
    id="svg3824"
    version="1.1"
    inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="flea.svg"
-   inkscape:export-filename="/home/akari/git/taisei/resources/gfx/proj/flea.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/tmp/flea.png"
+   inkscape:export-xdpi="181.21321"
+   inkscape:export-ydpi="181.21321">
   <defs
      id="defs3826">
     <linearGradient
@@ -71,15 +71,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="45.254834"
-     inkscape:cx="6.1007455"
-     inkscape:cy="5.7999188"
+     inkscape:cx="0.69586693"
+     inkscape:cy="5.5888664"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1158"
+     inkscape:window-width="1920"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="20"
+     inkscape:window-y="30"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -92,8 +92,8 @@
        visible="true"
        enabled="true"
        snapvisiblegridlinesonly="true"
-       originx="0"
-       originy="0"
+       originx="-0.042847633"
+       originy="-0.042856132"
        spacingx="1.0666667"
        spacingy="1.0666667" />
   </sodipodi:namedview>
@@ -113,7 +113,7 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-1106.5087)">
+     transform="translate(-0.04284763,-1106.5515)">
     <circle
        style="fill:#0000ff;fill-opacity:0.88399999;fill-rule:nonzero;stroke:none;stroke-width:1.58928812"
        id="path4222"

@@ -16,9 +16,9 @@
    version="1.1"
    inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="plainball.svg"
-   inkscape:export-filename="/home/akari/git/taisei/resources/gfx/proj/plainball.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/tmp/plainball.png"
+   inkscape:export-xdpi="179.81882"
+   inkscape:export-ydpi="179.81882">
   <defs
      id="defs4">
     <linearGradient
@@ -80,16 +80,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="32"
-     inkscape:cx="15.044282"
-     inkscape:cy="13.812718"
+     inkscape:zoom="22.627417"
+     inkscape:cx="17.887603"
+     inkscape:cy="12.045051"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1158"
+     inkscape:window-width="1920"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="20"
+     inkscape:window-y="30"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"

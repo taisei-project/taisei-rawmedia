@@ -14,11 +14,11 @@
    height="20"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="boss_indicator.svg"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/boss_indicator.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/tmp/boss_indicator.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192">
   <defs
      id="defs4">
     <linearGradient
@@ -45,7 +45,7 @@
        x2="69.604294"
        y2="1042.4497"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-0.07913941,-0.08753755)" />
+       gradientTransform="matrix(1.0137536,0,0,1.0335942,-0.5616046,-35.107726)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -54,9 +54,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="12.635714"
-     inkscape:cx="53.44227"
-     inkscape:cy="10"
+     inkscape:zoom="16"
+     inkscape:cx="30.360823"
+     inkscape:cy="12.865312"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -65,10 +65,31 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:window-width="1920"
-     inkscape:window-height="1038"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="-1"
-     inkscape:window-maximized="1" />
+     inkscape:window-y="30"
+     inkscape:window-maximized="1">
+    <sodipodi:guide
+       position="0,0"
+       orientation="0,70"
+       id="guide5833"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="70,0"
+       orientation="-20,0"
+       id="guide5835"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="70,20"
+       orientation="0,-70"
+       id="guide5837"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="0,20"
+       orientation="20,0"
+       id="guide5839"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -86,33 +107,33 @@
      id="layer1"
      transform="translate(0,-1032.3622)">
     <rect
-       style="fill:url(#linearGradient3761);fill-opacity:1;fill-rule:nonzero;stroke:none;opacity:0.43984962"
+       style="opacity:0.43984961;fill:url(#linearGradient3761);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.02362573"
        id="rect2985"
-       width="69.050308"
-       height="19.349915"
-       x="0.47484589"
-       y="1032.6873" />
+       width="70"
+       height="19.999958"
+       x="-5.1660065e-15"
+       y="1032.3622" />
     <text
        xml:space="preserve"
-       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#e6e6e6;fill-opacity:1;stroke:none;font-family:Linux Biolinum;-inkscape-font-specification:Linux Biolinum;opacity:0.43984962"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;opacity:0.43984961;fill:#e6e6e6;fill-opacity:1;stroke:none"
        x="11.765625"
        y="1045.6512"
-       id="text3765"
-       sodipodi:linespacing="125%"><tspan
+       id="text3765"><tspan
          sodipodi:role="line"
          id="tspan3767"
          x="11.765625"
-         y="1045.6512">Enemy</tspan></text>
+         y="1045.6512"
+         style="font-size:16px;line-height:1.25">Enemy</tspan></text>
     <text
-       sodipodi:linespacing="125%"
        id="text3791"
        y="1045.6512"
        x="11.765625"
-       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Linux Biolinum;-inkscape-font-specification:Linux Biolinum;opacity:0.43984962"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;opacity:0.43984961;fill:#ffffff;fill-opacity:1;stroke:none"
        xml:space="preserve"><tspan
          y="1045.6512"
          x="11.765625"
          id="tspan3793"
-         sodipodi:role="line">Enemy</tspan></text>
+         sodipodi:role="line"
+         style="font-size:16px;line-height:1.25">Enemy</tspan></text>
   </g>
 </svg>

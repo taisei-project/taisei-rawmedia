@@ -15,9 +15,9 @@
    version="1.1"
    inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="wave.svg"
-   inkscape:export-filename="/home/akari/git/taisei/resources/gfx/proj/wave.png"
-   inkscape:export-xdpi="112.5"
-   inkscape:export-ydpi="112.5">
+   inkscape:export-filename="/tmp/wave.png"
+   inkscape:export-xdpi="225"
+   inkscape:export-ydpi="225">
   <defs
      id="defs4">
     <filter
@@ -40,16 +40,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.075"
-     inkscape:cx="10.727136"
-     inkscape:cy="9.3398745"
+     inkscape:zoom="31.218764"
+     inkscape:cx="10.794417"
+     inkscape:cy="9.9435955"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1158"
+     inkscape:window-width="1920"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="20"
+     inkscape:window-y="30"
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
@@ -84,7 +84,7 @@
        sodipodi:nodetypes="cscsc"
        inkscape:connector-curvature="0"
        id="path2993"
-       d="m 3.2,1120.3863 c -0.7016375,2.2365 -1.0666667,-18.1333 7.466667,-18.1333 8.533333,0 8.169955,20.3751 7.466666,18.1333 -1.066666,-5.6666 -2.133333,-15.8666 -7.466666,-15.8666 -6.4000003,0 -6.4000003,10.2 -7.466667,15.8666 z"
+       d="m 3.1996524,1120.3863 c -0.7016375,2.2365 -1.0666667,-18.1333 7.4666666,-18.1333 8.533333,0 8.169955,20.3751 7.466666,18.1333 -1.066666,-5.6666 -2.133333,-15.8666 -7.466666,-15.8666 -6.3999999,0 -6.3999999,10.2 -7.4666666,15.8666 z"
        style="fill:#00ff00;stroke:none;stroke-width:1.06666672" />
     <path
        sodipodi:nodetypes="ccccccc"
@@ -92,16 +92,16 @@
        id="path2995"
        d="m 10,1036.3622 -3.3333333,3.3333 -1.3333334,6 4.6666667,2.6667 4.666667,-2.6667 -1.333334,-6 z"
        style="opacity:0.44604319;fill:#00ff00;stroke:none;filter:url(#filter3825)"
-       transform="matrix(1.6,0,0,1.6,-5.3333333,-555.92651)" />
+       transform="matrix(1.6,0,0,1.6,-5.3333337,-555.92651)" />
     <path
        style="fill:#0000ff;stroke:none;stroke-width:1.06666672"
-       d="m 3.2,1120.3863 c -0.7016375,2.105 -1.0666667,-17.0666 7.466667,-17.0666 8.533333,0 8.169955,19.1765 7.466666,17.0666 C 17.066667,1115.053 16,1105.453 10.666667,1105.453 c -6.4000003,0 -6.4000003,9.6 -7.466667,14.9333 z"
+       d="m 3.1996524,1120.3863 c -0.7016375,2.105 -1.0666667,-17.0666 7.4666666,-17.0666 8.533333,0 8.169955,19.1765 7.466666,17.0666 -1.066666,-5.3333 -2.133333,-14.9333 -7.466666,-14.9333 -6.3999999,0 -6.3999999,9.6 -7.4666666,14.9333 z"
        id="path2989"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cscsc" />
     <path
        style="fill:#0000ff;stroke:none;stroke-width:1.06666672"
-       d="m 10.666667,1107.5863 -4.266667,3.2 1.0666667,5.3334 3.2000003,4.2666 3.2,-4.2666 1.066666,-5.3334 z"
+       d="m 10.666667,1107.5863 -4.2666661,3.2 1.0666667,5.3334 3.1999994,4.2666 3.2,-4.2666 1.066666,-5.3334 z"
        id="path2991"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccc" />

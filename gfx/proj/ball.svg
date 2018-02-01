@@ -16,9 +16,9 @@
    version="1.1"
    inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="ball.svg"
-   inkscape:export-filename="/home/akari/git/taisei/resources/gfx/proj/ball.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/tmp/ball.png"
+   inkscape:export-xdpi="178.70833"
+   inkscape:export-ydpi="178.70833">
   <defs
      id="defs4">
     <linearGradient
@@ -81,15 +81,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="32"
-     inkscape:cx="16.305992"
+     inkscape:cx="10.696617"
      inkscape:cy="14.916063"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1158"
+     inkscape:window-width="1920"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="20"
+     inkscape:window-y="30"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
