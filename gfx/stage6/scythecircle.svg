@@ -14,11 +14,11 @@
    height="588.48602"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/stage6/scythescircle.png"
-   inkscape:export-xdpi="30.586962"
-   inkscape:export-ydpi="30.586962"
-   sodipodi:docname="Neues Dokument 1">
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+   inkscape:export-filename="/tmp/scythescircle.png"
+   inkscape:export-xdpi="65.25219"
+   inkscape:export-ydpi="65.25219"
+   sodipodi:docname="scythecircle.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -54,9 +54,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="516.29239"
-     inkscape:cy="227.94363"
+     inkscape:zoom="1.4"
+     inkscape:cx="266.33358"
+     inkscape:cy="284.4817"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -65,9 +65,9 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:window-width="1920"
-     inkscape:window-height="1061"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="-1"
+     inkscape:window-y="30"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -77,7 +77,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -90,7 +90,7 @@
        id="g3872">
       <path
          transform="translate(0,-25.941682)"
-         d="m 585.88847,445.2605 c 0,131.10458 -106.28126,237.38585 -237.38585,237.38585 -131.10458,0 -237.38584,-106.28127 -237.38584,-237.38585 0,-131.10459 106.28126,-237.38585 237.38584,-237.38585 131.10459,0 237.38585,106.28126 237.38585,237.38585 z"
+         d="M 585.88847,445.2605 A 237.38585,237.38585 0 0 1 348.50262,682.64635 237.38585,237.38585 0 0 1 111.11678,445.2605 237.38585,237.38585 0 0 1 348.50262,207.87465 237.38585,237.38585 0 0 1 585.88847,445.2605 Z"
          sodipodi:ry="237.38585"
          sodipodi:rx="237.38585"
          sodipodi:cy="445.2605"
@@ -121,7 +121,7 @@
          style="fill:none;stroke:#5fd38d;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <path
          transform="matrix(1.2189737,0,0,1.2189737,-76.312895,-123.442)"
-         d="m 585.88847,445.2605 c 0,131.10458 -106.28126,237.38585 -237.38585,237.38585 -131.10458,0 -237.38584,-106.28127 -237.38584,-237.38585 0,-131.10459 106.28126,-237.38585 237.38584,-237.38585 131.10459,0 237.38585,106.28126 237.38585,237.38585 z"
+         d="M 585.88847,445.2605 A 237.38585,237.38585 0 0 1 348.50262,682.64635 237.38585,237.38585 0 0 1 111.11678,445.2605 237.38585,237.38585 0 0 1 348.50262,207.87465 237.38585,237.38585 0 0 1 585.88847,445.2605 Z"
          sodipodi:ry="237.38585"
          sodipodi:rx="237.38585"
          sodipodi:cy="445.2605"
@@ -137,11 +137,10 @@
          sodipodi:cy="445.2605"
          sodipodi:rx="237.38585"
          sodipodi:ry="237.38585"
-         d="m 585.88847,445.2605 c 0,131.10458 -106.28126,237.38585 -237.38585,237.38585 -131.10458,0 -237.38584,-106.28127 -237.38584,-237.38585 0,-131.10459 106.28126,-237.38585 237.38584,-237.38585 131.10459,0 237.38585,106.28126 237.38585,237.38585 z"
+         d="M 585.88847,445.2605 A 237.38585,237.38585 0 0 1 348.50262,682.64635 237.38585,237.38585 0 0 1 111.11678,445.2605 237.38585,237.38585 0 0 1 348.50262,207.87465 237.38585,237.38585 0 0 1 585.88847,445.2605 Z"
          transform="matrix(1.2189737,0,0,1.2189737,-76.312895,-123.442)" />
       <text
          transform="matrix(1.050532,0,0,1.050532,-17.608902,-22.532599)"
-         sodipodi:linespacing="100%"
          id="text3783"
          style="font-size:40.09788132px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:1.0470885px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#5fd38d;fill-opacity:1;stroke:none;font-family:Anime Ace;-inkscape-font-specification:Anime Ace"
          xml:space="preserve"><textPath

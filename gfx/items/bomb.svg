@@ -14,13 +14,25 @@
    height="232.38969"
    id="svg2"
    version="1.1"
-   inkscape:version="0.92.1 r"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="bomb.svg"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/items/bomb.png"
-   inkscape:export-xdpi="12.806076"
-   inkscape:export-ydpi="12.806076">
+   inkscape:export-filename="/tmp/bomb.png"
+   inkscape:export-xdpi="25.612152"
+   inkscape:export-ydpi="25.612152">
   <defs
      id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient2644">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop2640" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.72222221"
+         offset="1"
+         id="stop2642" />
+    </linearGradient>
     <linearGradient
        id="linearGradient3795">
       <stop
@@ -35,11 +47,11 @@
     <linearGradient
        id="linearGradient3763">
       <stop
-         style="stop-color:#a95698;stop-opacity:1"
+         style="stop-color:#2bc167;stop-opacity:1"
          offset="0"
          id="stop3765" />
       <stop
-         style="stop-color:#d715ab;stop-opacity:0"
+         style="stop-color:#24834a;stop-opacity:1"
          offset="1"
          id="stop3767" />
     </linearGradient>
@@ -54,6 +66,36 @@
        r="73.50135"
        gradientTransform="matrix(1,0,0,1.1626409,0,-40.928237)"
        gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3763"
+       id="radialGradient2638"
+       cx="250.74815"
+       cy="-245.66634"
+       fx="250.74815"
+       fy="-245.66634"
+       r="111.81218"
+       gradientTransform="matrix(0.60648294,0,0,0.75231188,98.673675,-62.330196)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2644"
+       id="linearGradient2676"
+       gradientUnits="userSpaceOnUse"
+       x1="153.13231"
+       y1="-236.30515"
+       x2="153.13231"
+       y2="-319.39023" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2644"
+       id="linearGradient4789"
+       x1="233.09854"
+       y1="237.11542"
+       x2="233.09854"
+       y2="282.68387"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0096816,0,0,1.0096816,-3.8806674,-5.896554)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -62,9 +104,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.030736"
-     inkscape:cx="-161.07598"
-     inkscape:cy="94.04899"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="113.59068"
+     inkscape:cy="99.874423"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -72,14 +114,21 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="959"
-     inkscape:window-height="1042"
+     inkscape:window-width="1920"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="18"
-     inkscape:window-maximized="0"
-     inkscape:snap-to-guides="false"
-     inkscape:snap-others="false"
-     inkscape:snap-nodes="false" />
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
+     inkscape:snap-to-guides="true"
+     inkscape:snap-others="true"
+     inkscape:snap-nodes="false"
+     inkscape:snap-text-baseline="true"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-paths="true"
+     inkscape:bbox-nodes="false"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:snap-bbox-midpoints="true"
+     inkscape:snap-global="false" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -99,7 +148,7 @@
      transform="translate(-134.55331,-135.45305)">
     <path
        sodipodi:type="star"
-       style="fill:#2ca05a;fill-opacity:1;stroke:#2ca05a;stroke-width:11.35599995;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:3.9000001;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:url(#radialGradient2638);fill-opacity:1;stroke:#25874c;stroke-width:11.356;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:3.9000001;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
        id="path139"
        sodipodi:sides="5"
        sodipodi:cx="250.74815"
@@ -129,7 +178,33 @@
        sodipodi:cx="250.74815"
        sodipodi:sides="5"
        id="path4555"
-       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:9.25407982;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:3.9000001;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-opacity:1;stroke:url(#linearGradient2676);stroke-width:9.254;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:3.9000001;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
        sodipodi:type="star" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot2551"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="translate(134.55331,135.45305)"><flowRegion
+         id="flowRegion2553"><rect
+           id="rect2555"
+           width="58.997826"
+           height="44.934391"
+           x="84.380615"
+           y="106.84781" /></flowRegion><flowPara
+         id="flowPara2557">1</flowPara></flowRoot>    <g
+       aria-label="1"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70.25965118px;line-height:1.25;font-family:Mamelon;-inkscape-font-specification:Mamelon;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#fffdfe;stroke-width:1.505;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="text2596" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:85.47068787px;line-height:1.25;font-family:laconic;-inkscape-font-specification:laconic;letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient4789);fill-opacity:1;stroke:#fffdfe;stroke-width:2.13648629;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="228.52579"
+       y="291.46384"
+       id="text4781"><tspan
+         sodipodi:role="line"
+         id="tspan4779"
+         x="228.52579"
+         y="291.46384"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:laconic;-inkscape-font-specification:laconic;fill:url(#linearGradient4789);fill-opacity:1;stroke:#fffdfe;stroke-width:2.13648629;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">S</tspan></text>
   </g>
 </svg>

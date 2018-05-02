@@ -14,11 +14,11 @@
    height="28.870831"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="hghost.svg"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/proj/hghost.png"
-   inkscape:export-xdpi="72"
-   inkscape:export-ydpi="72">
+   inkscape:export-filename="/tmp/hghost.png"
+   inkscape:export-xdpi="152.95715"
+   inkscape:export-ydpi="152.95715">
   <defs
      id="defs4">
     <linearGradient
@@ -155,15 +155,6 @@
        fy="12.35599"
        r="12.18318"
        gradientUnits="userSpaceOnUse" />
-    <filter
-       inkscape:collect="always"
-       id="filter5795"
-       color-interpolation-filters="sRGB">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.51933123"
-         id="feGaussianBlur5797" />
-    </filter>
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient5848"
@@ -282,15 +273,6 @@
        y2="1046.0435"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.080407,0,0,1.080407,-1.1000304,-81.503384)" />
-    <filter
-       inkscape:collect="always"
-       id="filter3925"
-       color-interpolation-filters="sRGB">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.19230272"
-         id="feGaussianBlur3927" />
-    </filter>
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3897"
@@ -357,16 +339,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="12.275374"
-     inkscape:cx="-14.161973"
-     inkscape:cy="-2.8559102"
+     inkscape:zoom="17.36"
+     inkscape:cx="7.6610253"
+     inkscape:cy="9.9354341"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1039"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="-2"
+     inkscape:window-y="30"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -381,7 +363,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

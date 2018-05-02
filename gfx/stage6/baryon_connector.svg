@@ -13,11 +13,11 @@
    height="70.488029"
    id="svg3828"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="baryon_connector.svg"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/stage6/baryon_connector.png"
-   inkscape:export-xdpi="41.21056"
-   inkscape:export-ydpi="41.21056">
+   inkscape:export-filename="/tmp/baryon_connector.png"
+   inkscape:export-xdpi="87.830002"
+   inkscape:export-ydpi="87.830002">
   <defs
      id="defs3830">
     <linearGradient
@@ -56,9 +56,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.4124399"
-     inkscape:cx="202.44053"
-     inkscape:cy="118.36444"
+     inkscape:zoom="1.7058526"
+     inkscape:cx="241.69055"
+     inkscape:cy="37.651244"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -67,9 +67,9 @@
      fit-margin-right="0"
      fit-margin-bottom="10"
      inkscape:window-width="1920"
-     inkscape:window-height="1061"
-     inkscape:window-x="-1"
-     inkscape:window-y="-1"
+     inkscape:window-height="1170"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata3833">
@@ -79,7 +79,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

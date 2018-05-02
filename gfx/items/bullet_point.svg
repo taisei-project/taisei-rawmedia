@@ -14,11 +14,11 @@
    height="232.38969"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
-   sodipodi:docname="point.svg"
-   inkscape:export-filename="/home/laochailan/power.png"
-   inkscape:export-xdpi="6.1964884"
-   inkscape:export-ydpi="6.1964884">
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+   sodipodi:docname="bullet_point.svg"
+   inkscape:export-filename="/tmp/bullet_point.png"
+   inkscape:export-xdpi="13.219174"
+   inkscape:export-ydpi="13.219174">
   <defs
      id="defs4">
     <linearGradient
@@ -84,9 +84,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="76.849368"
-     inkscape:cy="107.92439"
+     inkscape:zoom="3.959798"
+     inkscape:cx="126.19021"
+     inkscape:cy="115.65716"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -95,9 +95,9 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:window-width="1920"
-     inkscape:window-height="1039"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="-2"
+     inkscape:window-y="30"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -107,7 +107,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -116,16 +116,16 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-134.55331,-135.45305)">
-    <path
-       sodipodi:type="arc"
-       style="opacity:0.57086618000000000;fill:#fff4ca;fill-opacity:1;fill-rule:evenodd;stroke:none;filter:url(#filter3921)"
+    <circle
+       style="opacity:0.57086618;fill:#faf1bb;fill-opacity:1;fill-rule:evenodd;stroke:none;filter:url(#filter3921)"
        id="path3099"
-       sodipodi:cx="30"
-       sodipodi:cy="43.103977"
-       sodipodi:rx="122.14286"
+       transform="matrix(0.59495854,0,0,0.59495854,232.89941,226.00282)"
+       d="M 152.14286,43.103977 A 122.14286,122.14286 0 0 1 30,165.24684 122.14286,122.14286 0 0 1 -92.14286,43.103977 122.14286,122.14286 0 0 1 30,-79.038883 122.14286,122.14286 0 0 1 152.14286,43.103977 Z"
+       sodipodi:type="arc"
        sodipodi:ry="122.14286"
-       d="m 152.14286,43.103977 a 122.14286,122.14286 0 1 1 -244.28572,0 122.14286,122.14286 0 1 1 244.28572,0 z"
-       transform="matrix(0.59495854,0,0,0.59495854,232.89941,226.00282)" />
+       sodipodi:rx="122.14286"
+       sodipodi:cy="43.103977"
+       sodipodi:cx="30" />
     <path
        id="path3850"
        style="font-size:180.6544342px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"

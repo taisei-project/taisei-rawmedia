@@ -14,11 +14,11 @@
    height="37.608253"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="marisa.svg"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/proj/marisa.png"
-   inkscape:export-xdpi="119.96432"
-   inkscape:export-ydpi="119.96432">
+   inkscape:export-filename="/tmp/marisa.png"
+   inkscape:export-xdpi="255.26312"
+   inkscape:export-ydpi="255.26312">
   <defs
      id="defs4">
     <linearGradient
@@ -69,9 +69,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="9.0416667"
-     inkscape:cx="-1.4324543"
-     inkscape:cy="23.683345"
+     inkscape:zoom="18.083333"
+     inkscape:cx="-5.4886851"
+     inkscape:cy="20.614601"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -80,9 +80,9 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:window-width="1920"
-     inkscape:window-height="1039"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="-2"
+     inkscape:window-y="30"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -92,7 +92,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -10,21 +10,21 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="341.25046"
-   height="340.98315"
+   width="340"
+   height="340"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="boss_spellcircle0.svg"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/boss_spellcircle0.png"
-   inkscape:export-xdpi="113.40644"
-   inkscape:export-ydpi="113.40644">
+   inkscape:export-filename="/tmp/boss_spellcircle0.png"
+   inkscape:export-xdpi="242.82353"
+   inkscape:export-ydpi="242.82353">
   <defs
      id="defs4">
     <filter
        inkscape:collect="always"
        id="filter3776"
-       color-interpolation-filters="sRGB">
+       style="color-interpolation-filters:sRGB">
       <feGaussianBlur
          inkscape:collect="always"
          stdDeviation="5.4245192"
@@ -39,15 +39,15 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="333.77379"
-     inkscape:cy="175.87991"
+     inkscape:cx="140.93766"
+     inkscape:cy="156.10282"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1038"
+     inkscape:window-height="1170"
      inkscape:window-x="0"
-     inkscape:window-y="-1"
+     inkscape:window-y="30"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="1"
@@ -69,33 +69,27 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-208.18764,-104.61929)">
-    <path
-       sodipodi:type="arc"
-       style="opacity:0.43233086;fill:none;stroke:#c83737;stroke-width:11.74356556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter3776)"
+     transform="translate(-208.18764,-105.60245)">
+    <circle
+       style="opacity:0.43233086;fill:none;stroke:#c83737;stroke-width:11.74356556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3776)"
        id="path2985"
-       sodipodi:cx="217.1828"
-       sodipodi:cy="242.21985"
-       sodipodi:rx="180.81731"
-       sodipodi:ry="180.81731"
-       d="m 398.00011,242.21985 c 0,99.86264 -80.95467,180.81731 -180.81731,180.81731 -99.86264,0 -180.817306,-80.95467 -180.817306,-180.81731 0,-99.86264 80.954666,-180.817308 180.817306,-180.817308 99.86264,0 180.81731,80.954668 180.81731,180.817308 z"
-       transform="matrix(0.85153015,0,0,0.85153015,194.07256,69.057376)" />
+       transform="matrix(0.85153015,0,0,0.85153015,193.24993,69.344943)"
+       cx="217.1828"
+       cy="242.21985"
+       r="180.81731" />
     <text
        xml:space="preserve"
-       style="font-size:24px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0.69px;word-spacing:0.50999998999999996px;opacity:0.34210528000000001;fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.30000000999999998;stroke-miterlimit:4;stroke-dasharray:none;font-family:Linux Libertine O;-inkscape-font-specification:Linux Libertine O Bold Italic"
+       style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:24px;line-height:0%;font-family:'Linux Libertine O';-inkscape-font-specification:'Linux Libertine O Bold Italic';letter-spacing:0.69px;word-spacing:0.50999999px;opacity:0.34210528;fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.30000001;stroke-miterlimit:4;stroke-dasharray:none"
        id="text3757"
-       sodipodi:linespacing="125%"><textPath
+       x="-0.82262576"
+       transform="translate(0,0.28756671)"><textPath
          xlink:href="#path2985"
          id="textPath3766">Border of Life Border of Life Border of Life Border of Life Border of Life Border of Life</textPath></text>
-    <path
-       sodipodi:type="arc"
-       style="opacity:0.09259997;fill:none;stroke:#ffffff;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+    <circle
+       style="opacity:0.09259997;fill:none;stroke:#ffffff;stroke-width:10.64771557;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path3812"
-       sodipodi:cx="373.75644"
-       sodipodi:cy="272.52441"
-       sodipodi:rx="135.36044"
-       sodipodi:ry="135.36044"
-       d="m 509.11688,272.52441 c 0,74.75751 -60.60293,135.36045 -135.36044,135.36045 -74.75751,0 -135.36044,-60.60294 -135.36044,-135.36045 0,-74.7575 60.60293,-135.36044 135.36044,-135.36044 74.75751,0 135.36044,60.60294 135.36044,135.36044 z"
-       transform="matrix(1.0647716,0,0,1.0647716,-19.152382,-15.065401)" />
+       cx="377.99023"
+       cy="275.39844"
+       r="144.12796" />
   </g>
 </svg>
