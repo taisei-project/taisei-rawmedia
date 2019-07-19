@@ -13,8 +13,6 @@ import subprocess
 import sys
 import tempfile
 
-from collections import namedtuple
-
 from concurrent.futures import (
     ThreadPoolExecutor,
     wait,
@@ -60,52 +58,6 @@ characters = {
     'wriggle': Character(),
     'youmu':   Character(im_args=['-flop'], offset_x=32),
 }
-
-
-def enable_alphamap(kra_in, kra_out):
-    namespace = 'http://www.calligra.org/DTD/krita'
-    tagpref = '{' + namespace + '}'
-    docname = 'maindoc.xml'
-
-    ET.register_namespace('', namespace)
-
-    with zipfile.ZipFile(kra_in, mode='r') as zinput:
-        doc = ET.parse(zinput.open(docname))
-        toplayers = doc.find(f'{tagpref}IMAGE').find(f'{tagpref}layers').findall(f'{tagpref}layer')
-        have_alphamap = False
-
-        for layer in toplayers:
-            attrib = layer.attrib
-
-            if attrib['name'] == 'alphamap':
-                attrib['visible'] = '1'
-                have_alphamap = True
-            else:
-                attrib['visible'] = '0'
-
-        if not have_alphamap:
-            return None
-
-        newdoc = io.BytesIO()
-        newdoc.write((
-            '<?xml version="1.0" encoding="UTF-8"?>\n'
-            "<!DOCTYPE DOC PUBLIC '-//KDE//DTD krita 2.0//EN' 'http://www.calligra.org/DTD/krita-2.0.dtd'>\n"
-        ).encode('utf8'))
-        doc.write(newdoc, encoding='UTF-8', xml_declaration=False)
-        newdoc.seek(0)
-        newdoc = newdoc.read().decode('utf8')
-
-        with zipfile.ZipFile(kra_out, 'w') as zoutput:
-            zoutput.comment = zinput.comment
-
-            for zinfo in zinput.infolist():
-                if zinfo.filename == docname:
-                    zoutput.writestr(docname, newdoc)
-                else:
-                    zoutput.writestr(zinfo, zinput.read(zinfo.filename))
-
-    return kra_out
-
 
 
 def export_layers(kra, outdir):
@@ -169,10 +121,13 @@ def export_char(name, args, executor, futures, temp_dir):
     in_base  = temp_dir / f'{name}.png'
     out_base = dest_dir / f'{name}.png'
 
-    in_alphamap  = temp_dir / f'{name}.alphamap.png'
-    out_alphamap = dest_dir / f'{name}.alphamap.png'
-
     export_layers(kra, temp_dir)
+
+    variants = [
+        x.stem[len(f'{name}_variant_'):]
+        for x in temp_dir.glob(f'{name}_variant_*.png')
+        if '.' not in x.stem
+    ]
 
     g_base = Geometry(subprocess.check_output([
         'convert',
@@ -187,20 +142,30 @@ def export_char(name, args, executor, futures, temp_dir):
     print(f'Exported `{out_base}`')
     parallel_task(optimize_image, out_base)
 
+    def export_cropped_to_base(img_name):
+        img_in   = temp_dir / img_name
+        img_out  = dest_dir / img_name
+
+        subprocess.check_call([
+            'convert',
+            img_in,
+        ] + resize_args + [
+            '-depth', '8',
+        ] + char.im_args + [
+            '-crop', str(g_base),
+            img_out,
+        ], text=True)
+        print(f'Exported `{img_out}`')
+        optimize_image(img_out)
+
     if (temp_dir / f'{name}.alphamap.png').is_file():
-        @parallel_task
-        def alphamap_task():
-            subprocess.check_call([
-                'convert',
-                in_alphamap,
-            ] + resize_args + [
-                '-depth', '8',
-            ] + char.im_args + [
-                '-crop', str(g_base),
-                out_alphamap,
-            ], text=True)
-            print(f'Exported `{out_alphamap}`')
-            optimize_image(out_alphamap)
+        parallel_task(export_cropped_to_base, f'{name}.alphamap.png')
+
+    for var in variants:
+        parallel_task(export_cropped_to_base, f'{name}_variant_{var}.png')
+
+        if (temp_dir / f'{name}_variant_{var}.alphamap.png').is_file():
+            parallel_task(export_cropped_to_base, f'{name}_variant_{var}.alphamap.png')
 
     update_sprite_def(
         sprite_overrides / f'{name}.spr',
@@ -240,97 +205,6 @@ def export_char(name, args, executor, futures, temp_dir):
             )
 
 
-def OLD_export_char(name, args, executor):
-    taisei = args.taisei
-    im_extra_args = characters[name]
-    srcfile = pathlib.Path(__file__).parent / f'{name}.kra'
-    dest_dir = taisei / 'atlas' / 'portraits' / 'dialog'
-    dest_png = dest_dir / f'{name}.png'
-    dest_alphamap_png = dest_dir / f'{name}.alphamap.png'
-    dest_webp = dest_dir / f'{name}.webp'
-    dest_alphamap_webp = dest_dir / f'{name}.alphamap.webp'
-
-    with tempfile.TemporaryDirectory() as tdir:
-        tdir = pathlib.Path(tdir)
-
-        # remove previous exports
-        for img in [dest_png, dest_webp, dest_alphamap_png, dest_alphamap_webp]:
-            with contextlib.suppress(FileNotFoundError):
-                img.unlink()
-
-        # start exporting, resizing, and cropping the main image
-        main_img_task = executor.submit(export_layers, srcfile, tdir)
-
-        main_img_task.result()
-        print(tdir)
-        input()
-        quit(0)
-
-        alphamap_kra = enable_alphamap(srcfile, tdir / srcfile.name)
-
-        # start exporting the alphamap
-        # we can't crop it until we're done with the main image
-        if alphamap_kra:
-            # NOTE: https://bugs.kde.org/409133
-            alphamap_task = executor.submit(subprocess.call, ['krita', alphamap_kra, '--export', '--export-filename', out_alphamap_tmp])
-
-        # wait for main image export to finish
-        main_img_task.result()
-
-        # fetch metadata from exported main image
-        w, h, xofs, yofs = re.findall(r'.*? PNG (\d+)x(\d+).* \d+x\d+\+(\d+)\+(\d+)', subprocess.check_output(['identify', dest_png], text=True))[0]
-        w, h, xofs, yofs = int(w), int(h), int(xofs), int(yofs)
-
-        # now we can start optimizing it
-        if not args.fast:
-            main_img_task = executor.submit(subprocess.check_call, [taisei / 'scripts' / 'optimize-img.sh', dest_png])
-
-        # update atlas overrides
-        overrides = taisei / 'atlas' / 'overrides' / 'dialog'
-
-        with contextlib.suppress(FileNotFoundError):
-            (overrides / f'{name}.spr.renameme').unlink()
-
-        sprdef = overrides / f'{name}.spr'
-
-        try:
-            sprdef_text = sprdef.read_text()
-        except FileNotFoundError:
-            # no override? create one with just w and h set
-            sprdef_text = 'w = {:g}\nh = {:g}'.format(w/2, h/2)
-        else:
-            # update w and h, keep other properties
-            sprdef_text = re.sub(r'[\t ]*w[\t ]+=[\t ]+.*', 'w = {:g}'.format(w/2), sprdef_text)
-            sprdef_text = re.sub(r'[\t ]*h[\t ]+=[\t ]+.*', 'h = {:g}'.format(h/2), sprdef_text)
-
-        sprdef_text = f'\n{sprdef_text.strip()}\n'
-        sprdef.write_text(sprdef_text)
-
-        if alphamap_kra:
-            # wait for the alphamap export to finish
-            alphamap_task.result()
-
-            # now resize, crop, and optimize it
-            # no need to defer it to a task since it needs to be done sequentially anyway,
-            # and we have nothing else left to do in parallel
-            subprocess.check_call([
-                'convert',
-                '-verbose',
-                out_alphamap_tmp,
-                '-filter', 'RobidouxSharp',
-                '-resize', f'{100000/3072}%',  # 'x1000',
-            ] + char.args + [
-                # CAUTION: it's important to do this *after* char.args for flipping to work correctly!
-                '-crop', f'{w}x{h}+{xofs}+{yofs}'
-            ] + [dest_alphamap_png])
-
-            if not args.fast:
-                subprocess.check_call([taisei / 'scripts' / 'optimize-img.sh', dest_alphamap_png])
-
-        # wait for the main image optimization to finish
-        main_img_task.result()
-
-
 def main(args):
     parser = argparse.ArgumentParser(description='Export raw character portraits into a Taisei repository', prog=args[0])
 
@@ -366,7 +240,7 @@ def main(args):
         temp_dir = pathlib.Path(temp_dir)
         futures = []
 
-        with ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()) as ex:
+        with ThreadPoolExecutor(max_workers=multiprocessing.cpu_count() + 2) as ex:
             for name in args.characters:
                 futures.append(ex.submit(export_char, name, args, ex, futures, temp_dir))
 

@@ -2,6 +2,7 @@
 from krita import *
 import pathlib
 import tempfile
+import shutil
 
 
 kr = Krita.instance()
@@ -10,6 +11,8 @@ kr.setBatchmode(True)
 exportConfig = InfoObject()
 exportConfig.setProperty("saveSRGBProfile", False)
 exportConfig.setProperty("compression", 1)
+
+export_overrides = pathlib.Path(__file__).parent / 'export-overrides'
 
 
 def __main__(args):
@@ -23,11 +26,22 @@ def __main__(args):
     bounds = doc.bounds()
     root = doc.rootNode()
 
+    def msg(*args):
+        print(f'[{basename}]', *args)
+
     def export(node, suffix='', doc=doc):
-        o = str(out_path / f'{basename}{suffix}.png')
-        node.save(o, 1, 1, exportConfig, bounds)
-        doc.waitForDone()
-        print(f'Exported `{o}`')
+        fname = f'{basename}{suffix}.png'
+        out = str(out_path / fname)
+        override = export_overrides / fname
+
+        if override.is_file():
+            shutil.copy(override, out)
+            msg(f'Copied `{override}` as `{out}`')
+        else:
+            sync(doc=doc)
+            node.save(out, 1, 1, exportConfig, bounds)
+            doc.waitForDone()
+            msg(f'Exported `{out}`')
 
     def sync(doc=doc):
         doc.waitForDone()
@@ -39,13 +53,12 @@ def __main__(args):
         exp_overlay = filterVisible(exp_overlay)
 
         for face in expressions.childNodes():
-            print(f'Exporting face `{face.name()}`...')
+            msg(f'Exporting face `{face.name()}`...')
             keep = exp_overlay + [face]
             trash, _ = findExtraneous(root, keep)
             trash = filterVisible(trash)
             setVisibleAll(trash, False)
             face.setVisible(True)
-            sync()
             export(root, f'_face_{face.name()}')
             # export(face, f'_face_{face.name()}_reference')
             setVisibleAll(trash, True)
@@ -69,12 +82,11 @@ def __main__(args):
             var.setVisible(True)
 
             if alphamap:
-                print(f'Exporting variant `{var.name()}` alphamap...')
+                msg(f'Exporting variant `{var.name()}` alphamap...')
 
                 # BUG: broken due to https://bugs.kde.org/show_bug.cgi?id=409949
 
                 alphamap.setVisible(True)
-                sync()
                 export(alphamap, f'_variant_{var.name()}.alphamap')
                 alphamap.setVisible(False)
 
@@ -87,25 +99,21 @@ def __main__(args):
                 alphamap.setVisible(False)
                 '''
 
-            print(f'Exporting variant `{var.name()}`...')
-            sync()
+            msg(f'Exporting variant `{var.name()}`...')
             export(root, f'_variant_{var.name()}')
 
             var.setVisible(False)
 
-        sync()
-
     if alphamap:
         alphamap.setVisible(True)
-        sync()
-        print('Exporting alphamap...')
+        msg('Exporting alphamap...')
         export(alphamap, '.alphamap')
         alphamap.setVisible(False)
 
-    print('Exporting base...')
-    sync()
+    msg('Exporting base...')
     export(root)
 
+    msg('Done')
     # import code; code.interact(local=locals())
 
 
