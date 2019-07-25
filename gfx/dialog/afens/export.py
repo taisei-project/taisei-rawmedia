@@ -167,6 +167,12 @@ def export_char(name, args, executor, futures, temp_dir):
         if (temp_dir / f'{name}_variant_{var}.alphamap.png').is_file():
             parallel_task(export_cropped_to_base, f'{name}_variant_{var}.alphamap.png')
 
+        update_sprite_def(
+            sprite_overrides / f'{name}_variant_{var}.spr',
+            g_base.width / 2, g_base.height / 2,
+            char.offset_x, char.offset_y
+        )
+
     update_sprite_def(
         sprite_overrides / f'{name}.spr',
         g_base.width / 2, g_base.height / 2,
