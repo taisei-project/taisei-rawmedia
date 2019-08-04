@@ -3,6 +3,7 @@ from krita import *
 import pathlib
 import tempfile
 import shutil
+import re
 
 
 kr = Krita.instance()
@@ -58,9 +59,11 @@ def __main__(args):
             trash, _ = findExtraneous(root, keep)
             trash = filterVisible(trash)
             setVisibleAll(trash, False)
+            cond_disabled = findConditionallyDisabled(root, [f'face={face.name()}'])
+            setVisibleAll(cond_disabled, False)
             face.setVisible(True)
             export(root, f'_face_{face.name()}')
-            # export(face, f'_face_{face.name()}_reference')
+            setVisibleAll(cond_disabled, True)
             setVisibleAll(trash, True)
 
         expressions.setVisible(False)
@@ -80,6 +83,8 @@ def __main__(args):
         setVisibleAll(variants.childNodes(), False)
         for var in variants.childNodes():
             var.setVisible(True)
+            cond_disabled = findConditionallyDisabled(root, [f'variant={var.name()}'])
+            setVisibleAll(cond_disabled, False)
 
             if alphamap:
                 msg(f'Exporting variant `{var.name()}` alphamap...')
@@ -102,6 +107,7 @@ def __main__(args):
             msg(f'Exporting variant `{var.name()}`...')
             export(root, f'_variant_{var.name()}')
 
+            setVisibleAll(cond_disabled, True)
             var.setVisible(False)
 
     if alphamap:
@@ -157,6 +163,31 @@ def findExtraneous(root, keepset):
             trash.append(n)
 
     return trash, found_kept
+
+
+def walkNodes(root):
+    for n in root.childNodes():
+        yield n
+
+        for s in walkNodes(n):
+            yield s
+
+
+def findConditionallyDisabled(root, true_conds):
+    r = re.compile(r'@disable-if\[(.*?)\]')
+    ret = []
+
+    for n in walkNodes(root):
+        if not n.visible():
+            continue
+
+        nconds = r.findall(n.name())
+
+        for c in nconds:
+            if c in true_conds:
+                ret.append(n)
+
+    return ret
 
 
 def filterVisible(nodes):
