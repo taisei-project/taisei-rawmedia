@@ -93,6 +93,12 @@ def update_sprite_def(path, w, h, ox=0, oy=0):
     path.write_text(sprdef_text)
 
 
+def get_center_offset(g_base, g_object):
+    ofs_x = g_object.offset_x - (g_base.width  - g_object.width)  / 2 - g_base.offset_x
+    ofs_y = g_object.offset_y - (g_base.height - g_object.height) / 2 - g_base.offset_y
+    return ofs_x, ofs_y
+
+
 def export_char(name, args, executor, futures, temp_dir):
     taisei = args.taisei
     char = characters[name]
@@ -118,9 +124,6 @@ def export_char(name, args, executor, futures, temp_dir):
     temp_dir = temp_dir / name
     temp_dir.mkdir()
 
-    in_base  = temp_dir / f'{name}.png'
-    out_base = dest_dir / f'{name}.png'
-
     export_layers(kra, temp_dir)
 
     variants = [
@@ -129,20 +132,25 @@ def export_char(name, args, executor, futures, temp_dir):
         if '.' not in x.stem
     ]
 
-    g_base = Geometry(subprocess.check_output([
-        'convert',
-        in_base,
-    ] + resize_args + [
-        '-depth', '8',
-    ] + char.im_args + [
-        '-trim',
-        '-print', '%wx%h%O',
-        out_base,
-    ], text=True))
-    print(f'Exported `{out_base}`')
-    parallel_task(optimize_image, out_base)
+    def export_trimmed(img_name):
+        img_in   = temp_dir / img_name
+        img_out  = dest_dir / img_name
 
-    def export_cropped_to_base(img_name):
+        geom = Geometry(subprocess.check_output([
+            'convert',
+            img_in,
+        ] + resize_args + [
+            '-depth', '8',
+        ] + char.im_args + [
+            '-trim',
+            '-print', '%wx%h%O',
+            img_out,
+        ], text=True))
+        print(f'Exported `{img_out}`')
+        parallel_task(optimize_image, img_out)
+        return geom
+
+    def export_cropped(img_name, crop_geometry):
         img_in   = temp_dir / img_name
         img_out  = dest_dir / img_name
 
@@ -152,26 +160,33 @@ def export_char(name, args, executor, futures, temp_dir):
         ] + resize_args + [
             '-depth', '8',
         ] + char.im_args + [
-            '-crop', str(g_base),
+            '-crop', str(crop_geometry),
             img_out,
         ], text=True)
         print(f'Exported `{img_out}`')
-        optimize_image(img_out)
+        parallel_task(optimize_image, img_out)
+
+    g_base = export_trimmed(f'{name}.png')
 
     if (temp_dir / f'{name}.alphamap.png').is_file():
-        parallel_task(export_cropped_to_base, f'{name}.alphamap.png')
+        parallel_task(export_cropped, f'{name}.alphamap.png', g_base)
 
     for var in variants:
-        parallel_task(export_cropped_to_base, f'{name}_variant_{var}.png')
+        @parallel_task
+        def export_variant(var=var):
+            g_var = export_trimmed(f'{name}_variant_{var}.png')
 
-        if (temp_dir / f'{name}_variant_{var}.alphamap.png').is_file():
-            parallel_task(export_cropped_to_base, f'{name}_variant_{var}.alphamap.png')
+            if (temp_dir / f'{name}_variant_{var}.alphamap.png').is_file():
+                parallel_task(export_cropped, f'{name}_variant_{var}.alphamap.png', g_var)
 
-        update_sprite_def(
-            sprite_overrides / f'{name}_variant_{var}.spr',
-            g_base.width / 2, g_base.height / 2,
-            char.offset_x, char.offset_y
-        )
+            ofs_x, ofs_y = get_center_offset(g_base, g_var)
+
+            update_sprite_def(
+                sprite_overrides / f'{name}_variant_{var}.spr',
+                g_var.width / 2, g_var.height / 2,
+                ofs_x / 2 + char.offset_x,
+                ofs_y / 2 + char.offset_y
+            )
 
     update_sprite_def(
         sprite_overrides / f'{name}.spr',
@@ -183,31 +198,14 @@ def export_char(name, args, executor, futures, temp_dir):
         @parallel_task
         def face_task(face=face):
             face_sprite_name = face.stem
-            out_face = dest_dir / f'{face_sprite_name}.png'
-
-            g_face = Geometry(subprocess.check_output([
-                'convert',
-                face,
-            ] + resize_args + [
-                '-depth', '8',
-            ] + char.im_args + [
-                '-trim',
-                '-print', '%wx%h%O',
-                out_face,
-            ], text=True))
-            print(f'Exported `{out_face}`')
-            parallel_task(optimize_image, out_face)
-
-            g_face.offset_x -= g_base.offset_x
-            g_face.offset_y -= g_base.offset_y
-
-            ofs_x = char.offset_x + g_face.offset_x / 2 - (g_base.width  - g_face.width)  / 4
-            ofs_y = char.offset_y + g_face.offset_y / 2 - (g_base.height - g_face.height) / 4
+            g_face = export_trimmed(f'{face_sprite_name}.png')
+            ofs_x, ofs_y = get_center_offset(g_base, g_face)
 
             update_sprite_def(
                 sprite_overrides / f'{face_sprite_name}.spr',
                 g_face.width / 2, g_face.height / 2,
-                ofs_x, ofs_y
+                ofs_x / 2 + char.offset_x,
+                ofs_y / 2 + char.offset_y
             )
 
 
