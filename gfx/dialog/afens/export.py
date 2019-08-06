@@ -5,6 +5,7 @@ import contextlib
 import io
 import itertools
 import multiprocessing
+import operator
 import os
 import pathlib
 import re
@@ -35,8 +36,51 @@ class Geometry:
         return '{}x{}{:+}{:+}'.format(self.width, self.height, self.offset_x, self.offset_y)
 
 
+class Padding:
+    def __init__(self, top=0, bottom=0, left=0, right=0):
+        self.top = top
+        self.bottom = bottom
+        self.left = left
+        self.right = right
+
+    @classmethod
+    def from_offset(cls, x=0, y=0):
+        return cls(top=y, bottom=-y, left=x, right=-x)
+
+    def _apply_op_copy(self, other, op):
+        if not isinstance(other, Padding):
+            other = Padding(other, other, other, other)
+
+        return Padding(
+            top=op(self.top, other.top),
+            bottom=op(self.bottom, other.bottom),
+            left=op(self.left, other.left),
+            right=op(self.right, other.right)
+        )
+
+    def _apply_op(self, other, op):
+        if not isinstance(other, Padding):
+            other = Padding(other, other, other, other)
+
+        self.top = op(self.top, other.top)
+        self.bottom = op(self.bottom, other.bottom)
+        self.left = op(self.left, other.left)
+        self.right = op(self.right, other.right)
+
+    def __add__(self, other): return self._apply_op_copy(other, operator.add)
+    def __sub__(self, other): return self._apply_op_copy(other, operator.sub)
+    def __mul__(self, other): return self._apply_op_copy(other, operator.mul)
+    def __neg__(self, other): return self._apply_op_copy(other, operator.neg)
+    def __iadd__(self, other): return self._apply_op(other, operator.add)
+    def __isub__(self, other): return self._apply_op(other, operator.sub)
+    def __imul__(self, other): return self._apply_op(other, operator.mul)
+    def __neg__(self, other): return self._apply_op(other, operator.neg)
+
+
+
 resize_filter = 'RobidouxSharp'
 resize_scale = 1000.0 / 3072.0
+sprite_size_factor = 0.5
 
 
 class Character:
@@ -73,23 +117,19 @@ def try_remove_file(path):
         path.unlink()
 
 
-def update_sprite_def(path, w, h, ox=0, oy=0):
+def update_sprite_def(path, w, h, padding=None):
     try_remove_file(path.with_name(path.name + '.renameme'))
 
-    '''
-    try:
-        sprdef_text = path.read_text()
-    except FileNotFoundError:
-        sprdef_text = 'w = {:g}\nh = {:g}\noffset_x = {:g}\noffset_y = {:g}'.format(w, h, ox, oy)
-    else:
-        sprdef_text = re.sub(r'[\t ]*w[\t ]+=[\t ]+.*', 'w = {:g}'.format(w), sprdef_text)
-        sprdef_text = re.sub(r'[\t ]*h[\t ]+=[\t ]+.*', 'h = {:g}'.format(h), sprdef_text)
-        sprdef_text = re.sub(r'[\t ]*offset_x[\t ]+=[\t ]+.*', 'offset_x = {:g}'.format(ox), sprdef_text)
-        sprdef_text = re.sub(r'[\t ]*offset_y[\t ]+=[\t ]+.*', 'offset_y = {:g}'.format(ox), sprdef_text)
+    sprdef_text = '\nw = {:g}\nh = {:g}'.format(w, h)
 
-    sprdef_text = f'\n{sprdef_text.strip()}\n'
-    '''
-    sprdef_text = '\nw = {:g}\nh = {:g}\noffset_x = {:g}\noffset_y = {:g}\n'.format(w, h, ox, oy)
+    if padding:
+        sprdef_text += (
+            '\npadding_top = {:g}'
+            '\npadding_bottom = {:g}'
+            '\npadding_left = {:g}'
+            '\npadding_right = {:g}'
+        ).format(padding.top, padding.bottom, padding.left, padding.right)
+
     path.write_text(sprdef_text)
 
 
@@ -99,12 +139,22 @@ def get_center_offset(g_base, g_object):
     return ofs_x, ofs_y
 
 
+def calculate_relative_padding(g_base, g_object):
+    m = Padding()
+    m.top = g_object.offset_y - g_base.offset_y
+    m.bottom = (g_base.offset_y + g_base.height) - (g_object.offset_y + g_object.height)
+    m.left = g_object.offset_x - g_base.offset_x
+    m.right = (g_base.offset_x + g_base.width) - (g_object.offset_x + g_object.width)
+    return m
+
+
 def export_char(name, args, executor, futures, temp_dir):
     taisei = args.taisei
     char = characters[name]
     kra = pathlib.Path(__file__).parent / f'{name}.kra'
     dest_dir = taisei / 'atlas' / 'portraits' / 'dialog'
     sprite_overrides = taisei / 'atlas' / 'overrides' / 'dialog'
+    offset_padding = Padding.from_offset(char.offset_x, char.offset_y)
 
     resize_args = [
         '-filter', resize_filter,
@@ -179,19 +229,18 @@ def export_char(name, args, executor, futures, temp_dir):
             if (temp_dir / f'{name}_variant_{var}.alphamap.png').is_file():
                 parallel_task(export_cropped, f'{name}_variant_{var}.alphamap.png', g_var)
 
-            ofs_x, ofs_y = get_center_offset(g_base, g_var)
+            pad = calculate_relative_padding(g_base, g_var) * sprite_size_factor
 
             update_sprite_def(
                 sprite_overrides / f'{name}_variant_{var}.spr',
-                g_var.width / 2, g_var.height / 2,
-                ofs_x / 2 + char.offset_x,
-                ofs_y / 2 + char.offset_y
+                g_var.width * sprite_size_factor, g_var.height * sprite_size_factor,
+                pad + offset_padding
             )
 
     update_sprite_def(
         sprite_overrides / f'{name}.spr',
-        g_base.width / 2, g_base.height / 2,
-        char.offset_x, char.offset_y
+        g_base.width * sprite_size_factor, g_base.height * sprite_size_factor,
+        offset_padding
     )
 
     for face in temp_dir.glob('*_face_*.png'):
@@ -199,13 +248,13 @@ def export_char(name, args, executor, futures, temp_dir):
         def face_task(face=face):
             face_sprite_name = face.stem
             g_face = export_trimmed(f'{face_sprite_name}.png')
-            ofs_x, ofs_y = get_center_offset(g_base, g_face)
+            pad = calculate_relative_padding(g_base, g_face) * sprite_size_factor
 
             update_sprite_def(
                 sprite_overrides / f'{face_sprite_name}.spr',
-                g_face.width / 2, g_face.height / 2,
-                ofs_x / 2 + char.offset_x,
-                ofs_y / 2 + char.offset_y
+                g_face.width * sprite_size_factor,
+                g_face.height * sprite_size_factor,
+                pad + offset_padding
             )
 
 
