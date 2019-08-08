@@ -1,5 +1,7 @@
 
 from krita import *
+from contextlib import contextmanager
+
 import pathlib
 import tempfile
 import shutil
@@ -49,75 +51,75 @@ def __main__(args):
         doc.refreshProjection()
         doc.waitForDone()
 
+    @contextmanager
+    def conditions(*cond_list, root=root):
+        cond_disabled = findConditionallyDisabled(root, cond_list)
+        setVisibleAll(cond_disabled, False)
+        cond_enabled = findConditionallyEnabled(root, cond_list)
+        setVisibleAll(cond_enabled, True)
+        yield
+        setVisibleAll(cond_enabled, False)
+        setVisibleAll(cond_disabled, True)
+
+    @contextmanager
+    def hideExtraneous(*keep_list, root=root):
+        trash, _ = findExtraneous(root, keep_list)
+        trash = filterVisible(trash)
+        setVisibleAll(trash, False)
+        for n in trash:
+            msg(f'hideExtraneous: HIDE {n.name()}')
+        yield
+        setVisibleAll(trash, True)
+        for n in trash:
+            msg(f'hideExtraneous: SHOW {n.name()}')
+
+    @contextmanager
+    def temporarilyVisible(*nodes):
+        for n in nodes: n.setVisible(True)
+        yield
+        for n in nodes: n.setVisible(False)
+
     expressions, exp_overlay = findWithOverlay(root, 'expression')
     if expressions:
-        exp_overlay = filterVisible(exp_overlay)
-
-        for face in expressions.childNodes():
-            msg(f'Exporting face `{face.name()}`...')
-            keep = exp_overlay + [face]
-            trash, _ = findExtraneous(root, keep)
-            trash = filterVisible(trash)
-            setVisibleAll(trash, False)
-            cond_disabled = findConditionallyDisabled(root, [f'face={face.name()}'])
-            setVisibleAll(cond_disabled, False)
-            face.setVisible(True)
-            export(root, f'_face_{face.name()}')
-            setVisibleAll(cond_disabled, True)
-            setVisibleAll(trash, True)
-
-        expressions.setVisible(False)
+        with temporarilyVisible(expressions):
+            setVisibleAll(expressions.childNodes(), False)
+            exp_overlay = filterVisible(exp_overlay)
+            for face in expressions.childNodes():
+                msg(f'Exporting face `{face.name()}`...')
+                with hideExtraneous(exp_overlay, face), conditions(f'face={face.name()}'), temporarilyVisible(face):
+                    export(root, f'_face_{face.name()}')
 
     alphamap = findNode(root.childNodes(), 'alphamap')
+
+    if alphamap:
+        alphamap.setVisible(False)
+
     variants, _ = findWithOverlay(root, 'variant')
 
     if variants:
-        variants.setVisible(True)
-        setVisibleAll(variants.childNodes(), False)
+        with temporarilyVisible(variants):
+            setVisibleAll(variants.childNodes(), False)
+            for var in variants.childNodes():
+                with temporarilyVisible(var), conditions(f'variant={var.name()}'):
+                    if alphamap:
+                        with temporarilyVisible(alphamap):
+                            # BUG: broken due to https://bugs.kde.org/show_bug.cgi?id=409949
+                            msg(f'Exporting variant `{var.name()}` alphamap...')
+                            export(alphamap, f'_variant_{var.name()}.alphamap')
 
-    if alphamap:
-        alphamap_trash, _ = findExtraneous(root, [alphamap])
-        alphamap_trash = filterVisible(alphamap_trash)
+                    msg(f'Exporting variant `{var.name()}`...')
+                    export(root, f'_variant_{var.name()}')
 
-    if variants:
-        setVisibleAll(variants.childNodes(), False)
-        for var in variants.childNodes():
-            var.setVisible(True)
-            cond_disabled = findConditionallyDisabled(root, [f'variant={var.name()}'])
-            setVisibleAll(cond_disabled, False)
-
-            if alphamap:
-                msg(f'Exporting variant `{var.name()}` alphamap...')
-
-                # BUG: broken due to https://bugs.kde.org/show_bug.cgi?id=409949
-
+    with conditions('novariant'):
+        if alphamap:
+            with temporarilyVisible(alphamap):
                 alphamap.setVisible(True)
-                export(alphamap, f'_variant_{var.name()}.alphamap')
+                msg('Exporting alphamap...')
+                export(alphamap, '.alphamap')
                 alphamap.setVisible(False)
 
-                '''
-                alphamap.setVisible(True)
-                setVisibleAll(alphamap_trash, False)
-                sync()
-                export(root, f'_variant_{var.name()}.alphamap')
-                setVisibleAll(alphamap_trash, True)
-                alphamap.setVisible(False)
-                '''
-
-            msg(f'Exporting variant `{var.name()}`...')
-            export(root, f'_variant_{var.name()}')
-
-            setVisibleAll(cond_disabled, True)
-            var.setVisible(False)
-
-    if alphamap:
-        alphamap.setVisible(True)
-        msg('Exporting alphamap...')
-        export(alphamap, '.alphamap')
-        alphamap.setVisible(False)
-
-    msg('Exporting base...')
-    export(root)
+        msg('Exporting base...')
+        export(root)
 
     msg('Done')
     # import code; code.interact(local=locals())
@@ -179,6 +181,23 @@ def findConditionallyDisabled(root, true_conds):
 
     for n in walkNodes(root):
         if not n.visible():
+            continue
+
+        nconds = r.findall(n.name())
+
+        for c in nconds:
+            if c in true_conds:
+                ret.append(n)
+
+    return ret
+
+
+def findConditionallyEnabled(root, true_conds):
+    r = re.compile(r'@enable-if\[(.*?)\]')
+    ret = []
+
+    for n in walkNodes(root):
+        if n.visible():
             continue
 
         nconds = r.findall(n.name())
