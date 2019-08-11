@@ -66,12 +66,8 @@ def __main__(args):
         trash, _ = findExtraneous(root, keep_list)
         trash = filterVisible(trash)
         setVisibleAll(trash, False)
-        for n in trash:
-            msg(f'hideExtraneous: HIDE {n.name()}')
         yield
         setVisibleAll(trash, True)
-        for n in trash:
-            msg(f'hideExtraneous: SHOW {n.name()}')
 
     @contextmanager
     def temporarilyVisible(*nodes):
