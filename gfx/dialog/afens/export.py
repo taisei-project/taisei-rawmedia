@@ -77,7 +77,6 @@ class Padding:
     def __neg__(self, other): return self._apply_op(other, operator.neg)
 
 
-
 resize_filter = 'RobidouxSharp'
 resize_scale = 1000.0 / 3072.0
 sprite_size_factor = 0.5
@@ -104,12 +103,18 @@ characters = {
 }
 
 
-def export_layers(kra, outdir):
+def export_layers(kra, outdir, legacy):
     kra = str(kra.resolve())
     outdir = str(outdir.resolve())
     cwd = str(pathlib.Path(__file__).parent)
     os.environ['PYTHONPATH'] = cwd
-    subprocess.call(['kritarunner', '-s', 'krita_exportlayers', kra, outdir], cwd=cwd)
+
+    cmd = ['kritarunner', '-s', 'krita_exportlayers', '--', kra, outdir]
+
+    if legacy:
+        cmd.append('--legacy')
+
+    subprocess.call(cmd, cwd=cwd)
 
 
 def try_remove_file(path):
@@ -174,7 +179,7 @@ def export_char(name, args, executor, futures, temp_dir):
     temp_dir = temp_dir / name
     temp_dir.mkdir()
 
-    export_layers(kra, temp_dir)
+    export_layers(kra, temp_dir, args.legacy)
 
     variants = [
         x.stem[len(f'{name}_variant_'):]
@@ -278,6 +283,12 @@ def main(args):
         default=False,
         action='store_true',
         help='do not optimize images',
+    )
+
+    parser.add_argument('--legacy',
+        default=False,
+        action='store_true',
+        help='export single variant with static face (for v1.3.x)',
     )
 
     args = parser.parse_args()

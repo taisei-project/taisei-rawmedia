@@ -6,6 +6,7 @@ import pathlib
 import tempfile
 import shutil
 import re
+import argparse
 
 
 kr = Krita.instance()
@@ -19,8 +20,29 @@ export_overrides = pathlib.Path(__file__).parent / 'export-overrides'
 
 
 def __main__(args):
-    kra_path = pathlib.Path(args[0])
-    out_path = pathlib.Path(args[1])
+    p = argparse.ArgumentParser(description='Export layers from character art for further processing', prog=__file__)
+
+    p.add_argument('kra',
+        type=pathlib.Path,
+        help='path to the source .kra',
+    )
+
+    p.add_argument('output',
+        type=pathlib.Path,
+        help='path to the output directory',
+    )
+
+    p.add_argument('--legacy',
+        default=False,
+        action='store_true',
+        help='export single variant with static face (for v1.3.x)',
+    )
+
+    args = p.parse_args(args)
+
+    kra_path = args.kra
+    out_path = args.output
+    is_legacy = args.legacy
 
     basename = kra_path.stem
 
@@ -75,6 +97,38 @@ def __main__(args):
         yield
         for n in nodes: n.setVisible(False)
 
+    if is_legacy:
+        expressions = findNode(root.childNodes(), 'expression')
+
+        if expressions:
+            expressions_children = expressions.childNodes()
+            setVisibleAll(expressions_children, False)
+
+            normal_face = findNode(expressions_children, 'normal')
+
+            if normal_face:
+                normal_face.setVisible(True)
+
+        variants = findNode(root.childNodes(), 'variant')
+
+        if variants:
+            setVisibleAll(variants.childNodes(), False)
+
+        alphamap = findNode(root.childNodes(), 'alphamap')
+
+        with conditions('novariant', 'face=normal'):
+            if alphamap:
+                with temporarilyVisible(alphamap):
+                    msg('Exporting alphamap...')
+                    export(alphamap, '.alphamap')
+
+            msg('Exporting base...')
+            export(root)
+
+        msg('Done')
+
+        return
+
     expressions, exp_overlay = findWithOverlay(root, 'expression')
     if expressions:
         with temporarilyVisible(expressions):
@@ -109,10 +163,8 @@ def __main__(args):
     with conditions('novariant'):
         if alphamap:
             with temporarilyVisible(alphamap):
-                alphamap.setVisible(True)
                 msg('Exporting alphamap...')
                 export(alphamap, '.alphamap')
-                alphamap.setVisible(False)
 
         msg('Exporting base...')
         export(root)
