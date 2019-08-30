@@ -14,11 +14,11 @@
    height="109.44003"
    id="svg2985"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
-   inkscape:export-filename="/home/laochailan/src/taisei/gfx/proj/soul.png"
-   inkscape:export-xdpi="82.236816"
-   inkscape:export-ydpi="82.236816"
-   sodipodi:docname="Neues Dokument 2">
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   inkscape:export-filename="/tmp/soul.png"
+   inkscape:export-xdpi="542.1051"
+   inkscape:export-ydpi="542.1051"
+   sodipodi:docname="soul.svg">
   <defs
      id="defs2987">
     <linearGradient
@@ -35,6 +35,14 @@
          id="stop3771"
          offset="0.56471974"
          style="stop-color:#00ff00;stop-opacity:0.72608697;" />
+      <stop
+         style="stop-color:#00ff16;stop-opacity:0.75294119"
+         offset="0.69193459"
+         id="stop916" />
+      <stop
+         id="stop918"
+         offset="0.81986815"
+         style="stop-color:#0001ff;stop-opacity:0.88627452" />
       <stop
          style="stop-color:#0000ff;stop-opacity:1;"
          offset="1"
@@ -67,9 +75,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.415"
-     inkscape:cx="33.54221"
-     inkscape:cy="54.720002"
+     inkscape:zoom="3.1218764"
+     inkscape:cx="39.997241"
+     inkscape:cy="66.141727"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -78,9 +86,9 @@
      fit-margin-right="2"
      fit-margin-bottom="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1061"
+     inkscape:window-height="1158"
      inkscape:window-x="0"
-     inkscape:window-y="-1"
+     inkscape:window-y="42"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata2990">
@@ -90,7 +98,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
