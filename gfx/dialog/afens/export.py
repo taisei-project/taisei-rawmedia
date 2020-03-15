@@ -100,6 +100,7 @@ characters = {
     'scuttle': Character(offset_x=-16),
     'wriggle': Character(),
     'youmu':   Character(im_args=['-flop'], offset_x=32),
+    'yumemi':  Character(offset_y=110),
 }
 
 
@@ -162,8 +163,10 @@ def export_char(name, args, executor, futures, temp_dir):
     offset_padding = Padding.from_offset(char.offset_x, char.offset_y)
 
     resize_args = [
+        '-colorspace', 'LAB',
         '-filter', resize_filter,
         '-resize', f'{100 * resize_scale}%',
+        '-colorspace', 'sRGB',
     ]
 
     for p in itertools.chain(dest_dir.glob(f'{name}_*.*'), dest_dir.glob(f'{name}.*')):

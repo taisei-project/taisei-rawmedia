@@ -130,13 +130,14 @@ def __main__(args):
         return
 
     expressions, exp_overlay = findWithOverlay(root, 'expression')
+
     if expressions:
         with temporarilyVisible(expressions):
             setVisibleAll(expressions.childNodes(), False)
             exp_overlay = filterVisible(exp_overlay)
             for face in expressions.childNodes():
                 msg(f'Exporting face `{face.name()}`...')
-                with hideExtraneous(exp_overlay, face), conditions(f'face={face.name()}'), temporarilyVisible(face):
+                with hideExtraneous(*exp_overlay, face), conditions(f'face={face.name()}'), temporarilyVisible(face):
                     export(root, f'_face_{face.name()}')
 
     alphamap = findNode(root.childNodes(), 'alphamap')
@@ -150,7 +151,7 @@ def __main__(args):
         with temporarilyVisible(variants):
             setVisibleAll(variants.childNodes(), False)
             for var in variants.childNodes():
-                with temporarilyVisible(var), conditions(f'variant={var.name()}'):
+                with temporarilyVisible(var), conditions(f'variant={var.name()}', 'body'):
                     if alphamap:
                         with temporarilyVisible(alphamap):
                             # BUG: broken due to https://bugs.kde.org/show_bug.cgi?id=409949
@@ -160,7 +161,7 @@ def __main__(args):
                     msg(f'Exporting variant `{var.name()}`...')
                     export(root, f'_variant_{var.name()}')
 
-    with conditions('novariant'):
+    with conditions('novariant', 'body'):
         if alphamap:
             with temporarilyVisible(alphamap):
                 msg('Exporting alphamap...')
@@ -196,15 +197,24 @@ def findWithOverlay(root, name):
     return None, []
 
 
-def findExtraneous(root, keepset):
+def strLayers(layers):
+    try:
+        return repr(layers.name())
+    except AttributeError:
+        return repr([l.name() for l in layers])
+
+
+def findExtraneous(root, keepset, indent=0):
     trash = []
     found_kept = False
+
+    # print('\t'*indent + "findExtraneous(%s, %s)" % (strLayers(root), strLayers(keepset)))
 
     if root in keepset:
         return trash, True
 
     for n in root.childNodes():
-        nested_trash, nested_found_kept = findExtraneous(n, keepset)
+        nested_trash, nested_found_kept = findExtraneous(n, keepset, indent+1)
 
         if nested_found_kept:
             found_kept = True
@@ -212,6 +222,7 @@ def findExtraneous(root, keepset):
         else:
             trash.append(n)
 
+    # print('\t'*indent + "  --> %s, found_kept=%s" % (strLayers(trash), found_kept))
     return trash, found_kept
 
 
