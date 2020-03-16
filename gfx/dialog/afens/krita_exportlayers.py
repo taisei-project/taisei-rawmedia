@@ -170,6 +170,16 @@ def __main__(args):
         msg('Exporting base...')
         export(root)
 
+    misc = findNode(root.childNodes(), 'misc_exports')
+
+    if misc:
+        with temporarilyVisible(misc):
+            setVisibleAll(misc.childNodes(), False)
+            for n in misc.childNodes():
+                with temporarilyVisible(n), hideExtraneous(n):
+                    msg(f'Exporting misc target `{n.name()}`...')
+                    export(root, f'_misc_{n.name()}')
+
     msg('Done')
     # import code; code.interact(local=locals())
 

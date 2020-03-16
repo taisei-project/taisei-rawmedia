@@ -100,7 +100,7 @@ characters = {
     'scuttle': Character(offset_x=-16),
     'wriggle': Character(),
     'youmu':   Character(im_args=['-flop'], offset_x=32),
-    'yumemi':  Character(offset_y=110),
+    'yumemi':  Character(offset_y=120),
 }
 
 
@@ -251,7 +251,7 @@ def export_char(name, args, executor, futures, temp_dir):
         offset_padding
     )
 
-    for face in temp_dir.glob('*_face_*.png'):
+    for face in itertools.chain(temp_dir.glob('*_face_*.png'), temp_dir.glob('*_misc_*.png')):
         @parallel_task
         def face_task(face=face):
             face_sprite_name = face.stem
