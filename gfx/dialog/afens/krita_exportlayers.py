@@ -146,7 +146,6 @@ def __main__(args):
         alphamap.setVisible(False)
 
     variants, _ = findWithOverlay(root, 'variant')
-
     if variants:
         with temporarilyVisible(variants):
             setVisibleAll(variants.childNodes(), False)
@@ -175,10 +174,18 @@ def __main__(args):
     if misc:
         with temporarilyVisible(misc):
             setVisibleAll(misc.childNodes(), False)
+
             for n in misc.childNodes():
-                with temporarilyVisible(n), hideExtraneous(n):
+                with temporarilyVisible(n), hideExtraneous(n), conditions('novariant'):
                     msg(f'Exporting misc target `{n.name()}`...')
                     export(root, f'_misc_{n.name()}')
+
+            if variants:
+                for var in variants.childNodes():
+                    for n in misc.childNodes():
+                        with temporarilyVisible(n), hideExtraneous(n), conditions(f'variant={var.name()}'):
+                            msg(f'Exporting misc target `{n.name()}` (variant `{var.name()}`)...')
+                            export(root, f'_misc_{n.name()}_variant_{var.name()}')
 
     msg('Done')
     # import code; code.interact(local=locals())
