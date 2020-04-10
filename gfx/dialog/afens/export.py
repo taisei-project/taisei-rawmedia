@@ -134,6 +134,7 @@ def update_sprite_def(path, w, h, padding=None):
             '\npadding_bottom = {:g}'
             '\npadding_left = {:g}'
             '\npadding_right = {:g}'
+            '\n'
         ).format(padding.top, padding.bottom, padding.left, padding.right)
 
     path.write_text(sprdef_text)
