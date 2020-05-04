@@ -170,6 +170,8 @@ def export_char(name, args, executor, futures, temp_dir):
         '-colorspace', 'sRGB',
     ]
 
+    preprocess_args = resize_args + ['-depth', '8'] + char.im_args
+
     for p in itertools.chain(dest_dir.glob(f'{name}_*.*'), dest_dir.glob(f'{name}.*')):
         p.unlink()
 
@@ -191,20 +193,28 @@ def export_char(name, args, executor, futures, temp_dir):
         if '.' not in x.stem
     ]
 
+    def imagemagick(args, get_output=False):
+        args = ['convert'] + args
+        print('[run imagemagick]   ' + repr(args))
+
+        if get_output:
+            output = subprocess.check_output(args, text=True)
+            print('[imagemagick output]   ' + str(output))
+            return output
+        else:
+            return subprocess.check_call(args, text=True)
+
     def export_trimmed(img_name):
         img_in   = temp_dir / img_name
         img_out  = dest_dir / img_name
 
-        geom = Geometry(subprocess.check_output([
-            'convert',
+        geom = Geometry(imagemagick([
             img_in,
-        ] + resize_args + [
-            '-depth', '8',
-        ] + char.im_args + [
+        ] + preprocess_args + [
             '-trim',
             '-print', '%wx%h%O',
             img_out,
-        ], text=True))
+        ], get_output=True))
         print(f'Exported `{img_out}`')
         parallel_task(optimize_image, img_out)
         return geom
@@ -213,17 +223,49 @@ def export_char(name, args, executor, futures, temp_dir):
         img_in   = temp_dir / img_name
         img_out  = dest_dir / img_name
 
-        subprocess.check_call([
-            'convert',
+        imagemagick([
             img_in,
-        ] + resize_args + [
-            '-depth', '8',
-        ] + char.im_args + [
+        ] + preprocess_args + [
             '-crop', str(crop_geometry),
             img_out,
-        ], text=True)
+        ])
         print(f'Exported `{img_out}`')
         parallel_task(optimize_image, img_out)
+
+    def export_difference(img_name, ref_name):
+        img_in   = temp_dir / img_name
+        img_ref  = temp_dir / ref_name
+        crop_geom = localize_difference(img_in, img_ref)
+        parallel_task(export_cropped, img_name, crop_geom)
+        return crop_geom
+
+    def localize_difference(img1, img2):
+        def make_input(img):
+            return [
+                '(',
+                    img,
+                    ] + preprocess_args + [
+                    '(',
+                        '+clone',
+                        '-alpha', 'extract',
+                    ')',
+                    '-alpha', 'off',
+                    '-compose', 'multiply',
+                    '-composite',
+                ')',
+            ]
+
+        geom = Geometry(imagemagick([
+        ] + make_input(img1) + [
+        ] + make_input(img2) + [
+            '-compose', 'difference',
+            '-composite',
+            '-trim',
+            '-print', '%wx%h%O',
+            '/dev/null',
+        ], get_output=True))
+
+        return geom
 
     g_base = export_trimmed(f'{name}.png')
 
@@ -233,6 +275,14 @@ def export_char(name, args, executor, futures, temp_dir):
     for var in variants:
         @parallel_task
         def export_variant(var=var):
+            '''
+            if (temp_dir / f'{name}_variant_{var}.alphamap.png').is_file():
+                g_var = export_trimmed(f'{name}_variant_{var}.png')
+                parallel_task(export_cropped, f'{name}_variant_{var}.alphamap.png', g_var)
+            else:
+                g_var = export_difference(f'{name}_variant_{var}.png', f'{name}.png')
+            '''
+
             g_var = export_trimmed(f'{name}_variant_{var}.png')
 
             if (temp_dir / f'{name}_variant_{var}.alphamap.png').is_file():
