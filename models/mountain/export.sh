@@ -7,30 +7,30 @@ if [ $# -ne 1 ]; then
 	exit 1
 fi
 
-respath=$1/resources/00-taisei.pkgdir/
+respath=$1
 
-#blender leaf_texture.blend --background --python scripts/render_groundtex.py
+blender leaf_texture.blend --background --python scripts/render_groundtex.py
 blender mountain.blend --python scripts/export_models.py
 
-convert textures/ground_baked_ambient.png -quality 90% $respath/gfx/stage3/ground_ambient.webp
-convert textures/ground_baked_normal.png -quality 90% $respath/gfx/stage3/ground_normal.webp
-convert textures/ground_baked_roughness.png -quality 90% $respath/gfx/stage3/ground_roughness.webp
-convert textures/ground_baked_diffuse.png -quality 90% $respath/gfx/stage3/ground_diffuse.webp
+mkdir -p $respath/gfx/stage3
+mkdir -p $respath/models/stage3
 
-convert textures/trees_ambient.png -quality 90% $respath/gfx/stage3/trees_ambient.webp
-convert textures/trees_normal.png -quality 90% $respath/gfx/stage3/trees_normal.webp
-convert textures/trees_roughness.png -quality 90% $respath/gfx/stage3/trees_roughness.webp
-convert textures/trees_diffuse.png -quality 90% $respath/gfx/stage3/trees_diffuse.webp
+for tex in ground rocks trees; do
+	mkbasis textures/"$tex"_baked_diffuse.png -o $respath/gfx/stage3/"$tex"_diffuse.basis
+	mkbasis textures/"$tex"_baked_ambient.png -o $respath/gfx/stage3/"$tex"_ambient.basis
+	mkbasis textures/"$tex"_baked_normal.png --normal -o $respath/gfx/stage3/"$tex"_normal.basis
+	mkbasis textures/"$tex"_baked_roughness.png --r --linear -o $respath/gfx/stage3/"$tex"_roughness.basis
+done
 
-convert textures/rocks_ambient.png -quality 90% $respath/gfx/stage3/rocks_ambient.webp
-convert textures/rocks_normal.png -quality 90% $respath/gfx/stage3/rocks_normal.webp
-convert textures/rocks_roughness.png -quality 90% $respath/gfx/stage3/rocks_roughness.webp
-convert textures/rocks_diffuse.png -quality 90% $respath/gfx/stage3/rocks_diffuse.webp
+convert textures/leaves_baked_ambient.png \( textures/leaves_alpha_.png -colorspace gray -alpha off \) -compose copy-opacity -composite textures/leaves_composite_ambient.png
+convert textures/leaves_baked_normal.png \( textures/leaves_alpha_.png -colorspace gray -alpha off \) -compose copy-opacity -composite textures/leaves_composite_normal.png
+convert textures/leaves_baked_roughness.png \( textures/leaves_alpha_.png -colorspace gray -alpha off \) -compose copy-opacity -composite textures/leaves_composite_roughness.png
+convert textures/leaves_baked_diffuse.png \( textures/leaves_alpha_.png -colorspace gray -alpha off \) -compose copy-opacity -composite textures/leaves_composite_diffuse.png
 
-convert textures/leaves_baked_ambient.png -quality 90% \( textures/leaves_alpha_.png -colorspace gray -alpha off \) -compose copy-opacity -composite $respath/gfx/stage3/leaves_ambient.webp
-convert textures/leaves_baked_normal.png -quality 90% \( textures/leaves_alpha_.png -colorspace gray -alpha off \) -compose copy-opacity -composite $respath/gfx/stage3/leaves_normal.webp
-convert textures/leaves_baked_roughness.png -quality 90% \( textures/leaves_alpha_.png -colorspace gray -alpha off \) -compose copy-opacity -composite $respath/gfx/stage3/leaves_roughness.webp
-convert textures/leaves_baked_diffuse.png -quality 90% \( textures/leaves_alpha_.png -colorspace gray -alpha off \) -compose copy-opacity -composite $respath/gfx/stage3/leaves_diffuse.webp
+mkbasis textures/leaves_composite_diffuse.png --rgba --no-multiply-alpha -o $respath/gfx/stage3/leaves_diffuse.basis
+mkbasis textures/leaves_composite_ambient.png --rgba --no-multiply-alpha -o $respath/gfx/stage3/leaves_ambient.basis
+mkbasis textures/leaves_composite_normal.png --normal -o $respath/gfx/stage3/leaves_normal.basis
+mkbasis textures/leaves_composite_roughness.png --gray-alpha --linear --no-multiply-alpha -o $respath/gfx/stage3/leaves_roughness.basis
 
 cp -v models/ground.iqm $respath/models/stage3/
 cp -v models/rocks.iqm $respath/models/stage3/

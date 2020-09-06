@@ -2,28 +2,26 @@
 
 # works with blender 2.82
 
+# TODO: this probably wants to be a makefile
+
 if [ $# -ne 1 ]; then
 	echo Usage: $0 TAISEIPATH
 	exit 1
 fi
 
-respath=$1/resources/00-taisei.pkgdir/
+respath=$1
 
 blender corridor.blend --python scripts/export_corridor.py
-#blender mansion.blend --python scripts/export_mansion.py
+blender mansion.blend --python scripts/export_mansion.py
+mkdir -p $respath/gfx/stage4
+mkdir -p $respath/models/stage4
 
-cp -v textures/ground_baked_diffuse.png $respath/gfx/stage4/ground_diffuse.png
-cp -v textures/ground_baked_roughness.png $respath/gfx/stage4/ground_roughness.png
-cp -v textures/ground_baked_normal.png $respath/gfx/stage4/ground_normal.png
-cp -v textures/ground_baked_ambient.png $respath/gfx/stage4/ground_ambient.png
-cp -v textures/mansion_baked_diffuse.png $respath/gfx/stage4/mansion_diffuse.png
-cp -v textures/mansion_baked_roughness.png $respath/gfx/stage4/mansion_roughness.png
-cp -v textures/mansion_baked_normal.png $respath/gfx/stage4/mansion_normal.png
-cp -v textures/mansion_baked_ambient.png $respath/gfx/stage4/mansion_ambient.png
-cp -v textures/corridor_baked_diffuse.png $respath/gfx/stage4/corridor_diffuse.png
-cp -v textures/corridor_baked_roughness.png $respath/gfx/stage4/corridor_roughness.png
-cp -v textures/corridor_baked_normal.png $respath/gfx/stage4/corridor_normal.png
-cp -v textures/corridor_baked_ambient.png $respath/gfx/stage4/corridor_ambient.png
+for tex in ground mansion corridor; do
+	mkbasis textures/"$tex"_baked_diffuse.png -o $respath/gfx/stage4/"$tex"_diffuse.basis
+	mkbasis textures/"$tex"_baked_ambient.png -o $respath/gfx/stage4/"$tex"_ambient.basis
+	mkbasis textures/"$tex"_baked_normal.png --normal -o $respath/gfx/stage4/"$tex"_normal.basis
+	mkbasis textures/"$tex"_baked_roughness.png --r --linear -o $respath/gfx/stage4/"$tex"_roughness.basis
+done
 
 cp -v models/mansion.iqm $respath/models/stage4/
 cp -v models/ground.iqm $respath/models/stage4/
