@@ -15,11 +15,11 @@ blender mountain.blend --python scripts/export_models.py
 mkdir -p $respath/gfx/stage3
 mkdir -p $respath/models/stage3
 
-for tex in ground rocks trees; do
-	mkbasis textures/"$tex"_baked_diffuse.png -o $respath/gfx/stage3/"$tex"_diffuse.basis
-	mkbasis textures/"$tex"_baked_ambient.png -o $respath/gfx/stage3/"$tex"_ambient.basis
-	mkbasis textures/"$tex"_baked_normal.png --normal -o $respath/gfx/stage3/"$tex"_normal.basis
-	mkbasis textures/"$tex"_baked_roughness.png --r --linear -o $respath/gfx/stage3/"$tex"_roughness.basis
+for tex in ground_baked rocks trees; do
+	mkbasis textures/"$tex"_diffuse.png -o $respath/gfx/stage3/"$tex"_diffuse.basis
+	mkbasis textures/"$tex"_ambient.png -o $respath/gfx/stage3/"$tex"_ambient.basis
+	mkbasis textures/"$tex"_normal.png --normal -o $respath/gfx/stage3/"$tex"_normal.basis
+	mkbasis textures/"$tex"_roughness.png --r --linear -o $respath/gfx/stage3/"$tex"_roughness.basis
 done
 
 convert textures/leaves_baked_ambient.png \( textures/leaves_alpha_.png -colorspace gray -alpha off \) -compose copy-opacity -composite textures/leaves_composite_ambient.png
