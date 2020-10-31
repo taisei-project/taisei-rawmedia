@@ -3,3 +3,4 @@
 .*-autosave.kra
 __pycache__
 *.pyc
+.directory
