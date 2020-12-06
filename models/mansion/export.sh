@@ -11,8 +11,8 @@ fi
 
 respath=$1
 
-blender corridor.blend --python scripts/export_corridor.py
-blender mansion.blend --python scripts/export_mansion.py
+#blender corridor.blend --python scripts/export_corridor.py
+#blender mansion.blend --python scripts/export_mansion.py
 mkdir -p $respath/gfx/stage4
 mkdir -p $respath/models/stage4
 
