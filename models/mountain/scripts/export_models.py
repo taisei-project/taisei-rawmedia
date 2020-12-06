@@ -18,7 +18,9 @@ bpy.context.view_layer.objects.active = rock
 
 bpy.ops.object.join()
 
+bpy.ops.object.mode_set(mode='EDIT')
 bpy.ops.uv.smart_project(island_margin=0.03)
+bpy.ops.object.mode_set(mode='OBJECT')
 
 bpy.ops.object.select_all(action='DESELECT')
 #join trees
@@ -28,7 +30,9 @@ for tree in tree_coll.all_objects:
 bpy.context.view_layer.objects.active = tree
 bpy.ops.object.join()
 
+bpy.ops.object.mode_set(mode='EDIT')
 bpy.ops.uv.smart_project(island_margin=0.03)
+bpy.ops.object.mode_set(mode='OBJECT')
 
 ground = bpy.data.objects['ground']
 ground.data.uv_layers['bake'].active = True
@@ -43,8 +47,8 @@ leaves.select_set(True)
 baketex_names = [
     'leaves_baked',
     'ground_baked',
-    'rocks',
-    'trees',
+    'rocks_baked',
+    'trees_baked',
 ]
 
 bake('normal','NORMAL', baketex_names=baketex_names)
@@ -74,8 +78,8 @@ export_obj('models/leaves.iqm')
 
 
 # save all generated textures
-bpy.data.images['rocks'].save()
-bpy.data.images['trees'].save()
+bpy.data.images['rocks_baked'].save()
+bpy.data.images['trees_baked'].save()
 bpy.data.images['ground_baked'].save()
 bpy.data.images['leaves_baked'].save()
 bpy.data.images['leaves_alpha'].save()
