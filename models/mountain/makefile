@@ -58,4 +58,4 @@ install: $(MODEL_FILES) $(BASIS_FILES)
 		cp $$f $(MODEL_PATH)/$$(basename $$f); \
 	done
 		
-.PHONY: install
+.PHONY: install all
