@@ -27,7 +27,7 @@ GRASS_INPUT_TEXTURE := textures/grass.png
 GRASS_BASIS_FILES := $(foreach suf, $(TYPES), textures/grass_$(suf).basis)
 
 TEXTURE_FILES := $(PATH_TEXTURE_FILES) $(BRANCH_TEXTURE_FILES)
-BASIS_FILES   := $(PATH_BASIS_FILES) $(BRANCH_BASIS_FILES) $(GRASS_BASIS_FILES)
+BASIS_FILES   := $(PATH_BASIS_FILES) $(BRANCH_BASIS_FILES) $(GRASS_BASIS_FILES) textures/water_floor.basis
 MODEL_FILES   := $(PATH_MODEL_FILES) $(BRANCH_MODEL_FILES)
 
 all: $(MODEL_FILES) $(BASIS_FILES)
@@ -69,6 +69,9 @@ textures/%_ambient.basis: textures/%_baked_ambient.png
 	
 textures/%_roughness.basis: textures/%_baked_roughness.png
 	mkbasis $< --gray-alpha --linear --no-multiply-alpha -o $@
+
+textures/water_floor.basis: textures/water_floor.png
+	mkbasis $< --rgb -o $@
 
 install: $(MODEL_FILES) $(BASIS_FILES)
 	mkdir -p $(TEXTURE_PATH)
