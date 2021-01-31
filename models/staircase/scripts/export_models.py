@@ -5,6 +5,11 @@ sys.path.append('../utils')
 from export_utils import *
 
 
+def set_metallic(material, value):
+    mat = bpy.data.materials[material]
+    principled = mat.node_tree.nodes.get('Principled BSDF')
+    principled.inputs['Metallic'].default_value = value
+
 bpy.ops.object.mode_set(mode='OBJECT')
 
 
@@ -42,6 +47,8 @@ models = {
     'metal': stairs_metal,
 }
 
+
+
 for _, obj in models.items():
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
@@ -61,8 +68,11 @@ for _, obj in models.items():
 bake('normal','NORMAL', baketex_names=baketex_names)
 bake('roughness','ROUGHNESS', baketex_names=baketex_names)
 bake('ambient','COMBINED', baketex_names=baketex_names)
+set_metallic('metal', 0)
 bake('diffuse','DIFFUSE',pass_filter={'COLOR'}, baketex_names=baketex_names)
 bpy.ops.object.select_all(action='DESELECT')
+
+
 
 for name, obj in models.items():
     obj.select_set(True) 

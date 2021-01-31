@@ -7,8 +7,8 @@ STAIRS_BAKE_TEXTURES := $(STAIRS_MODELS)
 
 STAIRS_BLEND_FILE := staircase.blend
 
-STAIRS_TEXTURE_FILES := $(foreach pre, $(STAIRS_BAKE_TEXTURES), $(foreach suf, $(TYPES), textures/$(pre)_baked_$(suf).png))
-STAIRS_BASIS_FILES := $(foreach pre, $(STAIRS_BAKE_TEXTURES), $(foreach suf, $(TYPES), textures/$(pre)_$(suf).basis))
+STAIRS_TEXTURE_FILES := $(filter-out metal_baked_ambient.png,$(foreach pre, $(STAIRS_BAKE_TEXTURES), $(foreach suf, $(TYPES), textures/$(pre)_baked_$(suf).png)))
+STAIRS_BASIS_FILES := $(filter-out metal_ambient.basis,$(foreach pre, $(STAIRS_BAKE_TEXTURES), $(foreach suf, $(TYPES), textures/$(pre)_$(suf).basis)))
 
 STAIRS_MODEL_FILES := $(foreach mod, $(STAIRS_MODELS), models/$(mod).iqm)
 
