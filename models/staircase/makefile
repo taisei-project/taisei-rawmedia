@@ -25,7 +25,6 @@ textures/%_normal.basis: textures/%_baked_normal.png
 	mkbasis $< --normal -o $@
 	
 textures/%_diffuse.basis: textures/%_baked_diffuse.png
-	whereis mkbasis
 	mkbasis $< --rgb -o $@
 	
 textures/%_ambient.basis: textures/%_baked_ambient.png
