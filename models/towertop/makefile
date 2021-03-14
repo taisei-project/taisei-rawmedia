@@ -21,6 +21,9 @@ all: $(MODEL_FILES) $(BASIS_FILES)
 $(TOWER_TEXTURE_FILES) $(TOWER_MODEL_FILES) &: $(TOWER_BLEND_FILE)
 	blender $(TOWER_BLEND_FILE) --python scripts/export_models.py
 
+models/calabi-yau-quintic.iqm: calabi-yau-quintic.blend
+	blender calabi-yau-quintic.blend --python scripts/calabi-yau-quintic.py
+
 textures/sky.basis: textures/sky.png
 	mkbasis $< --rgb -o $@
 
