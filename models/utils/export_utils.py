@@ -28,3 +28,9 @@ def bake(name, type, baketex_names, pass_filter=None):
 
     for texname in baketex_names:
         save_image(bpy.data.images[texname], suffix)
+
+
+def set_metallic(material, value):
+    mat = bpy.data.materials[material]
+    principled = mat.node_tree.nodes.get('Principled BSDF')
+    principled.inputs['Metallic'].default_value = value

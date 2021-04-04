@@ -5,11 +5,6 @@ sys.path.append('../utils')
 from export_utils import *
 
 
-def set_metallic(material, value):
-    mat = bpy.data.materials[material]
-    principled = mat.node_tree.nodes.get('Principled BSDF')
-    principled.inputs['Metallic'].default_value = value
-
 bpy.ops.object.mode_set(mode='OBJECT')
 
 
