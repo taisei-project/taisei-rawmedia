@@ -4,10 +4,10 @@ MODEL_PATH := $(PREFIX)models/stage6/
 
 SKY_BLEND_FILE := sky.blend
 SKY_TEXTURE_FILE := textures/sky.hdr
-SKY_BASIS_FILE := textures/sky.basis.zstd
+SKY_BASIS_FILE := textures/sky.basis.zst
 
 TOWER_BAKE_TEXTURES := tower stairs rim tower_bottom
-TOWER_MODELS := $(TOWER_BAKE_TEXTURES) top_plate spire_spike tower_bottom
+TOWER_MODELS := $(TOWER_BAKE_TEXTURES) top_plate spire_spike
 
 TOWER_BLEND_FILE := towertop.blend
 
