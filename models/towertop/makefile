@@ -4,10 +4,11 @@ MODEL_PATH := $(PREFIX)models/stage6/
 
 SKY_BLEND_FILE := sky.blend
 SKY_TEXTURE_FILE := textures/sky.hdr
+SKY_PNG_FILE := textures/sky.png
 SKY_BASIS_FILE := textures/sky.basis.zst
 
-TOWER_BAKE_TEXTURES := tower stairs rim tower_bottom
-TOWER_MODELS := $(TOWER_BAKE_TEXTURES) top_plate spire_spike
+TOWER_BAKE_TEXTURES := tower stairs rim tower_bottom spires
+TOWER_MODELS := $(TOWER_BAKE_TEXTURES) top_plate
 
 TOWER_BLEND_FILE := towertop.blend
 
@@ -25,7 +26,9 @@ all: $(MODEL_FILES) $(BASIS_FILES)
 $(SKY_TEXTURE_FILE) &: $(SKY_BLEND_FILE)
 	blender $(SKY_BLEND_FILE) --background --python scripts/render_sky.py
 
-$(SKY_BASIS_FILE): $(SKY_TEXTURE_FILE)
+$(SKY_PNG_FILE): $(SKY_TEXTURE_FILE)
+	convert $< -colorspace sRGB $@
+$(SKY_BASIS_FILE): $(SKY_PNG_FILE)
 	mkbasis $< --uastc --incredibly-slow --rgb -o $@
 	
 $(TOWER_TEXTURE_FILES) $(TOWER_MODEL_FILES) &: $(TOWER_BLEND_FILE) $(SKY_TEXTURE_FILE)

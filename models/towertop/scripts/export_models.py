@@ -43,23 +43,25 @@ tower_bottom.rotation_euler = (0, 0, 2*m.pi/12)
 bpy.ops.object.select_all(action='DESELECT')
 
 
-rim_plate.select_set(True)
 spire_spike.select_set(True)
-bpy.context.view_layer.objects.active = spire_spike
-bpy.ops.object.join()
 spire_spike.rotation_euler = (0, 0, 2*m.pi/12)
 bpy.ops.object.select_all(action='DESELECT')
+
+rim_plate.select_set(True)
+top_plate.select_set(True)
+bpy.context.view_layer.objects.active = top_plate
+bpy.ops.object.join()
 
 
 models = {
     'rim': rim,
     'stairs': stairs,
     'tower': tower,
-    'tower_bottom': tower_bottom
+    'tower_bottom': tower_bottom,
+    'spires': spire_spike,
 }
 
 mirror_models = {
-    'spire_spike': spire_spike,
     'top_plate': top_plate,
 }
 
