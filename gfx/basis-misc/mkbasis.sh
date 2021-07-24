@@ -53,6 +53,10 @@ RGB=(
     stage5/noise.png
 )
 
+RG_NO_MIPS=(
+    ibl_brdf_lut.png
+)
+
 GRAY=(
     cell_noise.webp
     gaplight.png
@@ -126,6 +130,11 @@ function make-cmd-list {
 
     for x in $RGB; do
         make-basis-cmd "$@" $x --linear
+        let err+=$?
+    done
+
+    for x in $RG_NO_MIPS; do
+        make-basis-cmd "$@" $x --linear --rg --no-mipmaps
         let err+=$?
     done
 
