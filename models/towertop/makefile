@@ -3,8 +3,7 @@ TEXTURE_PATH := $(PREFIX)gfx/stage6/
 MODEL_PATH := $(PREFIX)models/stage6/
 
 SKY_BLEND_FILE := sky.blend
-SKY_TEXTURE_FILE := textures/sky.hdr
-SKY_PNG_FILE := textures/sky.png
+SKY_TEXTURE_FILE := textures/sky.png
 SKY_BASIS_FILE := textures/sky.basis.zst
 
 TOWER_BAKE_TEXTURES := tower stairs rim tower_bottom spires
@@ -26,10 +25,8 @@ all: $(MODEL_FILES) $(BASIS_FILES)
 $(SKY_TEXTURE_FILE) &: $(SKY_BLEND_FILE)
 	blender $(SKY_BLEND_FILE) --background --python scripts/render_sky.py
 
-$(SKY_PNG_FILE): $(SKY_TEXTURE_FILE)
-	convert $< -colorspace sRGB $@
-$(SKY_BASIS_FILE): $(SKY_PNG_FILE)
-	mkbasis $< --uastc --incredibly-slow --rgb -o $@
+$(SKY_BASIS_FILE): $(SKY_TEXTURE_FILE)
+	mkbasis $< --uastc --incredibly-slow --rgb --equirect-cubemap -o $@
 	
 $(TOWER_TEXTURE_FILES) $(TOWER_MODEL_FILES) &: $(TOWER_BLEND_FILE) $(SKY_TEXTURE_FILE)
 	blender $(TOWER_BLEND_FILE) --python scripts/export_models.py
