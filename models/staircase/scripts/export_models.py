@@ -66,7 +66,6 @@ baketex_names = [name + '_baked' for name in models.keys()]
 for _, obj in models.items():
     obj.select_set(True)
 
-'''
 bake('ambient','COMBINED', baketex_names=baketex_names)
 bake('normal','NORMAL', baketex_names=baketex_names)
 bake('roughness','ROUGHNESS', baketex_names=baketex_names)
@@ -74,7 +73,6 @@ set_metallic('metal', 0)
 bake('diffuse','DIFFUSE',pass_filter={'COLOR'}, baketex_names=baketex_names)
 prepare_depth_bake()
 bake('depth', 'ROUGHNESS', baketex_names=baketex_names)
-'''
 bpy.ops.object.select_all(action='DESELECT')
 
 for name, obj in models.items():
