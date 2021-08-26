@@ -10,6 +10,13 @@ import datetime
 import collections
 from collections.abc import Callable
 
+def cleanup_mesh():
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles()
+    bpy.ops.mesh.select_all(action='DESELECT')
+    bpy.ops.object.editmode_toggle()
+
 def export_obj(filepath):
     bpy.ops.export.iqm(
         filepath=filepath,

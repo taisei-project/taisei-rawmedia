@@ -1,10 +1,13 @@
 
-STAIRS_TEXTURES := diffuse normal ambient roughness
-WALL_TEXTURES   := diffuse normal ambient roughness depth
-METAL_TEXTURES  := roughness
+STAIRS_TEXTURES := diffuse normal ambient ao roughness
+WALL_TEXTURES   := diffuse normal ambient ao roughness depth
+METAL_TEXTURES  :=                        ao roughness
 
 TEXTURE_PATH := $(PREFIX)gfx/stage5/
 MODEL_PATH := $(PREFIX)models/stage5/
+
+TEX_BAKED := textures/baked
+TEX_BASIS := textures/basis
 
 STAIRS_MODELS := wall stairs metal
 STAIRS_BAKE_TEXTURES := $(STAIRS_MODELS)
@@ -12,46 +15,64 @@ STAIRS_BAKE_TEXTURES := $(STAIRS_MODELS)
 STAIRS_BLEND_FILE := staircase.blend
 
 STAIRS_TEXTURE_FILES := \
-	$(foreach suf, $(STAIRS_TEXTURES), textures/stairs_baked_$(suf).png) \
-	$(foreach suf, $(WALL_TEXTURES), textures/wall_baked_$(suf).png) \
-	$(foreach suf, $(METAL_TEXTURES), textures/metal_baked_$(suf).png)
+	$(foreach suf, $(STAIRS_TEXTURES), $(TEX_BAKED)/stairs_$(suf).png) \
+	$(foreach suf, $(WALL_TEXTURES), $(TEX_BAKED)/wall_$(suf).png) \
+	$(foreach suf, $(METAL_TEXTURES), $(TEX_BAKED)/metal_$(suf).png) \
 
 STAIRS_BASIS_FILES := \
-	$(foreach suf, $(STAIRS_TEXTURES), textures/stairs_$(suf).basis) \
-	$(foreach suf, $(WALL_TEXTURES), textures/wall_$(suf).basis) \
-	$(foreach suf, $(METAL_TEXTURES), textures/metal_$(suf).basis)
+	$(foreach suf, $(STAIRS_TEXTURES), $(TEX_BASIS)/stairs_$(suf).basis) \
+	$(foreach suf, $(WALL_TEXTURES), $(TEX_BASIS)/wall_$(suf).basis) \
+	$(foreach suf, $(METAL_TEXTURES), $(TEX_BASIS)/metal_$(suf).basis) \
 
 STAIRS_MODEL_FILES := $(foreach mod, $(STAIRS_MODELS), models/$(mod).iqm)
 
-TEXTURE_FILES := $(STAIRS_TEXTURE_FILES) textures/envmap.png
-BASIS_FILES   := $(STAIRS_BASIS_FILES) textures/envmap.basis
+TEXTURE_FILES := $(STAIRS_TEXTURE_FILES) $(TEX_BAKED)/envmap.png
+BASIS_FILES   := $(STAIRS_BASIS_FILES) $(TEX_BASIS)/envmap.basis
 MODEL_FILES   := $(STAIRS_MODEL_FILES)
+
+MKBASIS_ARGS :=
 
 all: $(MODEL_FILES) $(BASIS_FILES)
 
 $(STAIRS_TEXTURE_FILES) $(STAIRS_MODEL_FILES) &: $(STAIRS_BLEND_FILE)
-	blender $(STAIRS_BLEND_FILE) --no-window-focus --python scripts/export_models.py
+	blender --background $(STAIRS_BLEND_FILE) -P scripts/export_models.py
 
-textures/envmap.png: $(STAIRS_BLEND_FILE)
-	blender $(STAIRS_BLEND_FILE) --no-window-focus --python scripts/export_envmap.py
+$(TEX_BAKED)/envmap.png: $(STAIRS_BLEND_FILE)
+	blender --background $(STAIRS_BLEND_FILE) -P scripts/export_envmap.py
 
-textures/%_normal.basis: textures/%_baked_normal.png
-	mkbasis $< --normal -o $@
+$(TEX_BASIS)/%_normal.basis: $(TEX_BAKED)/%_normal.png
+	mkbasis $< --normal $(MKBASIS_ARGS) -o $@
 
-textures/%_diffuse.basis: textures/%_baked_diffuse.png
-	mkbasis $< --rgb -o $@
+$(TEX_BASIS)/%_diffuse.basis: $(TEX_BAKED)/%_diffuse.png
+	mkbasis $< --rgb \
+		--preprocess-late ' -colorspace RGB -filter lanczos -resize 50% -colorspace sRGB ' \
+		$(MKBASIS_ARGS) -o $@
 
-textures/%_ambient.basis: textures/%_baked_ambient.png
-	mkbasis $< --rgb -o $@
+$(TEX_BASIS)/%_ambient.basis: $(TEX_BAKED)/%_ambient.png
+	mkbasis $< --rgb $(MKBASIS_ARGS) -o $@
 
-textures/%_roughness.basis: textures/%_baked_roughness.png
-	mkbasis $< --r --linear -o $@
+$(TEX_BASIS)/%_roughness.basis: $(TEX_BAKED)/%_roughness.png
+	mkbasis $< --r --linear \
+		--preprocess-late ' -filter catrom -resize 50% ' \
+		$(MKBASIS_ARGS) -o $@
 
-textures/%_depth.basis: textures/%_baked_depth.png
-	mkbasis $< --r --linear -o $@
+$(TEX_BASIS)/%_depth.basis: $(TEX_BAKED)/%_depth.png
+	mkbasis $< --r --linear \
+		--preprocess-late ' -filter catrom -resize 50% ' \
+		$(MKBASIS_ARGS) -o $@
 
-textures/envmap.basis: textures/envmap.png
-	mkbasis $< --rgb --equirect-cubemap -o $@
+$(TEX_BASIS)/metal_ao.basis: $(TEX_BAKED)/metal_ao.png
+	mkbasis $< --r --linear \
+		--preprocess-late ' -brightness-contrast 50,25 -filter gaussian -resize 50% ' \
+		$(MKBASIS_ARGS) -o $@
+
+$(TEX_BASIS)/%_ao.basis: $(TEX_BAKED)/%_ao.png
+	mkbasis $< --r --linear \
+		--preprocess-late ' -filter gaussian -resize 50% ' \
+		$(MKBASIS_ARGS) -o $@
+
+$(TEX_BASIS)/envmap.basis: $(TEX_BAKED)/envmap.png
+	mkbasis $< --rgb --equirect-cubemap $(MKBASIS_ARGS) -o $@
 
 install: $(MODEL_FILES) $(BASIS_FILES)
 	mkdir -p $(TEXTURE_PATH)

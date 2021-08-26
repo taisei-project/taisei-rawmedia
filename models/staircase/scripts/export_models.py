@@ -6,6 +6,7 @@ from export_utils import *
 
 bpy.ops.object.mode_set(mode='OBJECT')
 bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.material_slot_remove_unused()
 
 for obj in bpy.context.selected_objects:
     if obj.data is not None:
@@ -34,13 +35,16 @@ arcs.select_set(True)
 wall.select_set(True)
 bpy.context.view_layer.objects.active = wall
 bpy.ops.object.join()
+cleanup_mesh()
 bpy.ops.object.select_all(action='DESELECT')
 
 arcs_metal.select_set(True)
 stairs_metal.select_set(True)
 bpy.context.view_layer.objects.active = stairs_metal
 bpy.ops.object.join()
+cleanup_mesh()
 bpy.ops.object.select_all(action='DESELECT')
+stairs_metal.name = 'metal'
 
 models = {
     'wall': wall,
@@ -54,30 +58,49 @@ for _, obj in models.items():
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.editmode_toggle()
     bpy.ops.mesh.select_all(action='SELECT')
-    #bpy.ops.uv.smart_project(island_margin=0.003)
-    bpy.ops.uv.unwrap(method='ANGLE_BASED', margin=0.003)
-    #bpy.ops.uv.pack_islands(rotate=True, margin=0.001)
-    #bpy.ops.uv.lightmap_pack(PREF_IMG_PX_SIZE=2048, PREF_MARGIN_DIV=0.1)
+    if obj is stairs:
+        bpy.ops.uv.smart_project(island_margin=0.002)
+    else:
+        bpy.ops.uv.unwrap(method='ANGLE_BASED', margin=0.002)
+    bpy.ops.uv.pack_islands(rotate=True, margin=0.002)
     bpy.ops.object.editmode_toggle()
 
 bpy.ops.object.select_all(action='DESELECT')
-baketex_names = [name + '_baked' for name in models.keys()]
-
-for _, obj in models.items():
-    obj.select_set(True)
-
-bake('ambient','COMBINED', baketex_names=baketex_names)
-bake('normal','NORMAL', baketex_names=baketex_names)
-bake('roughness','ROUGHNESS', baketex_names=baketex_names)
-set_metallic('metal', 0)
-bake('diffuse','DIFFUSE',pass_filter={'COLOR'}, baketex_names=baketex_names)
-prepare_depth_bake()
-bake('depth', 'ROUGHNESS', baketex_names=baketex_names)
-bpy.ops.object.select_all(action='DESELECT')
 
 for name, obj in models.items():
-    obj.select_set(True) 
+    obj.select_set(True)
     export_obj('models/{}.iqm'.format(name))
     obj.select_set(False)
+
+# Baseline resolution
+q = 4096
+
+def makesize(q):
+    return {
+        'ao': q >> 1,
+        'default': q,
+    }
+
+bake_objects(
+    {
+        'object': wall,
+        'size': makesize(q >> 0),
+        'margin' : {
+            #'roughness': q,
+        },
+    },
+    {
+        'object': stairs,
+        'size': makesize(q >> 0),
+        'margin' : {
+            #'roughness': q,
+        },
+    },
+    {
+        'object': stairs_metal,
+        'size': makesize(q >> 0),
+        'exclude_passes': {'ambient', 'diffuse', 'normal'},
+    },
+)
 
 bpy.ops.wm.quit_blender()

@@ -30,13 +30,6 @@ rim_plate= bpy.data.objects['rim_plate']
 spires = bpy.data.objects['spires']
 bpy.ops.object.select_all(action='DESELECT')
 
-def cleanup_mesh():
-    bpy.ops.object.editmode_toggle()
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles()
-    bpy.ops.mesh.select_all(action='DESELECT')
-    bpy.ops.object.editmode_toggle()
-
 rim.select_set(True)
 pillars.select_set(True)
 bpy.context.view_layer.objects.active = rim
