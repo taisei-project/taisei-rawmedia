@@ -8,6 +8,7 @@ import contextlib
 import dataclasses
 import datetime
 import collections
+import itertools
 from collections.abc import Callable
 
 def cleanup_mesh():
@@ -16,6 +17,36 @@ def cleanup_mesh():
     bpy.ops.mesh.remove_doubles()
     bpy.ops.mesh.select_all(action='DESELECT')
     bpy.ops.object.editmode_toggle()
+
+def merge_collection(col, objname=None):
+    if isinstance(col, str):
+        col = bpy.data.collections[col]
+
+    if objname is None:
+        objname = col.name
+
+    bpy.ops.object.select_all(action='DESELECT')
+    for obj in col.all_objects:
+        obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.join()
+    obj.name = objname
+    cleanup_mesh()
+    bpy.ops.object.select_all(action='DESELECT')
+
+    return obj
+
+def merge_objects(main, *rest):
+    bpy.ops.object.select_all(action='DESELECT')
+    main.select_set(True)
+    for obj in rest:
+        obj.select_set(True)
+    bpy.context.view_layer.objects.active = main
+    bpy.ops.object.join()
+    cleanup_mesh()
+    bpy.ops.object.select_all(action='DESELECT')
+
+    return main
 
 def export_obj(filepath):
     bpy.ops.export.iqm(
@@ -86,16 +117,54 @@ class PerPassBakeSizeSetting(PerPassBakeSetting):
 
         return int(w), int(h)
 
+
+def iter_objects(objects):
+    if isinstance(objects, bpy.types.Object):
+        yield objects
+    elif isinstance(objects, bpy.types.Collection):
+        for o in objects.all_objects:
+            yield o
+    elif isinstance(objects, str):
+        yield bpy.data.objects[objects]
+    else:
+        for x in objects:
+            for o in iter_objects(x):
+                yield o
+
+def make_object_list(objects):
+    if isinstance(objects, bpy.types.Object):
+        return [objects]
+
+    if isinstance(objects, bpy.types.Collection):
+        return list(objects.all_objects)
+
+    if isinstance(objects, str):
+        return [bpy.data.objects[objects]]
+
+    l = list()
+    for o in objects:
+        l += make_object_list(o)
+
+    return l
+
 class BakeConfig:
     DEFAULT_SIZE = 2048
     DEFAULT_MARGIN = 16
 
     def __init__(self, object,
-                 size=DEFAULT_SIZE, alpha=False, exclude_passes=None, margin=DEFAULT_MARGIN):
-        if isinstance(object, str):
-            object = bpy.data.objects[object]
+                 size=DEFAULT_SIZE, alpha=False, exclude_passes=None, margin=DEFAULT_MARGIN,
+                 output_name=None):
+        if output_name is None and hasattr(object, 'name'):
+            output_name = object.name
 
-        self.obj = object
+        self.objects = list(filter(
+            lambda o: isinstance(o.data, bpy.types.Mesh), iter_objects(object)))
+
+        if output_name is None:
+            raise ValueError(
+                f'output_name not specified and could not be inferred for objects: {self.objects}')
+
+        self.output_name = output_name
         self.size = PerPassBakeSizeSetting('size', size, self.DEFAULT_SIZE)
         self.margin = PerPassBakeIntSetting('margin', margin, self.DEFAULT_MARGIN)
         self.alpha = alpha
@@ -108,15 +177,15 @@ class BakeConfig:
             }
 
 def create_bake_output_image(
-    obj, bake_pass, size, alpha=False, format='PNG'):
-    name = f'bake.{obj.name}.{bake_pass.name}'
+    texture_name, bake_pass, size, alpha=False, format='PNG'):
+    name = f'bake.{texture_name}.{bake_pass.name}'
     w, h = size
 
     img = bpy.data.images.new(name, w, h, alpha=alpha and bake_pass.may_have_alpha)
     img.file_format = format
     img.colorspace_settings.name = bake_pass.colorspace
     img.colorspace_settings.is_data = (bake_pass.colorspace == 'Non-Color')
-    img.filepath_raw = f'//textures/baked/{obj.name}_{bake_pass.name}.png'
+    img.filepath_raw = f'//textures/baked/{texture_name}_{bake_pass.name}.png'
 
     return img
 
@@ -146,44 +215,59 @@ def prepare_depth_bake(configs, mats):
 
     for mat in mats:
         out = get_material_output_node(mat)
-        bsdf = out.inputs['Surface'].links[0].from_node
-        assert isinstance(bsdf, bpy.types.ShaderNodeBsdfPrincipled)
+        surface_input = out.inputs['Surface']
 
-        roughness_input = bsdf.inputs['Roughness']
-        roughness_input.default_value = 0.0
+        for link in surface_input.links:
+            mat.node_tree.links.remove(link)
 
-        depth = find_node_by_label(mat.node_tree, 'Depth Map')
+        # Depth pass is baked as "emission"
+        # Create a simple emission shader and connect the depth map group to it
 
-        if depth is None:
-            for link in roughness_input.links:
-                mat.node_tree.links.remove(link)
-            print(f' - {mat.name}: set roughness to 0')
-        else:
-            mat.node_tree.links.new(roughness_input, depth.outputs['Depth'])
-            print(f' * {mat.name}: link depth map to roughness')
-            enabled_mats.add(mat)
+        emit_node = mat.node_tree.nodes.new(type='ShaderNodeEmission')
+        emit_input = emit_node.inputs['Color']
+        emit_input.default_value = [0, 0, 0, 1]
+        emit_output = emit_node.outputs['Emission']
+
+        # Connect emission shader to material output
+        mat.node_tree.links.new(surface_input, emit_output)
+
+        depthmap = find_node_by_label(mat.node_tree, 'Depth Map')
+        if depthmap is None:
+            print(f' * {mat.name}: create stub emission shader')
+            continue
+
+        depthmap_output = depthmap.outputs['Depth']
+
+        # Connect depth map to emission shader
+        mat.node_tree.links.new(emit_input, depthmap_output)
+
+        print(f' * {mat.name}: create emission shader for depth map')
+        enabled_mats.add(mat)
 
     for cfg in tuple(configs):
-        obj = cfg.obj
-        if not object_uses_one_of_materials(obj, enabled_mats):
-            print(f"Object `{obj.name}` skipped: no materials have a depth map")
+        skip = True
+        for obj in cfg.objects:
+            if object_uses_one_of_materials(obj, enabled_mats):
+                skip = False
+                break
+
+        if skip:
+            print(f"Texture set `{cfg.output_name}` skipped: no materials have a depth map")
             configs.remove(cfg)
 
 def prepare_diffuse_bake(configs, mats):
     print('Preparing materials for diffuse map bake…')
 
     for mat in mats:
-        out = get_material_output_node(mat)
-        bsdf = out.inputs['Surface'].links[0].from_node
-        assert isinstance(bsdf, bpy.types.ShaderNodeBsdfPrincipled)
+        for node in mat.node_tree.nodes:
+            if isinstance(node, bpy.types.ShaderNodeBsdfPrincipled):
+                metallic_input = node.inputs['Metallic']
+                metallic_input.default_value = 0.0
 
-        metallic_input = bsdf.inputs['Metallic']
-        metallic_input.default_value = 0.0
+                for link in metallic_input.links:
+                    mat.node_tree.links.remove(link)
 
-        for link in metallic_input.links:
-            mat.node_tree.links.remove(link)
-
-        print(f' * {mat.name}: set metallic to 0')
+                print(f' * {mat.name}: set metallic to 0')
 
 @dataclasses.dataclass
 class BakePass:
@@ -208,7 +292,7 @@ bake_passes = collections.OrderedDict((
     ('roughness',   BakePass('roughness',   'ROUGHNESS',    None, samples=1, may_have_alpha=True)),
     ('diffuse',     BakePass('diffuse',     'DIFFUSE',      {'COLOR'},  'sRGB',
                              samples=1, prepare=prepare_diffuse_bake)),
-    ('depth',       BakePass('depth',       'ROUGHNESS',    None,
+    ('depth',       BakePass('depth',       'EMIT',         None,
                              samples=1, prepare=prepare_depth_bake)),
 ))
 
@@ -216,8 +300,8 @@ class BakeError(RuntimeError):
     pass
 
 def bake_objects_pass(configs, bake_pass, samples=0, max_samples=0):
-    objects_str = ', '.join(c.obj.name for c in configs)
-    print(f"Preparing to bake {bake_pass.name} pass for objects: {objects_str}")
+    tsets_str = ', '.join(c.output_name for c in configs)
+    print(f"Preparing to bake {bake_pass.name} pass for texture sets: {tsets_str}")
 
     bpy.ops.object.select_all(action='DESELECT')
 
@@ -225,24 +309,23 @@ def bake_objects_pass(configs, bake_pass, samples=0, max_samples=0):
     cfgs = set()
 
     for cfg in configs:
-        obj = cfg.obj
-
-        def skip(reason, obj=obj):
-            print(f"Object `{obj.name}` skipped: {reason}")
+        def skip_cfg(reason, cfg=cfg):
+            print(f'Texture set `{cfg.output_name}` skipped: {reason}')
 
         if bake_pass in cfg.exclude_passes:
-            skip("pass excluded")
+            skip_cfg('pass excluded')
             continue
 
-        if not isinstance(obj.data, bpy_types.Mesh):
-            skip("object is not a mesh")
+        if not cfg.objects:
+            skip_cfg('no mesh objects defined')
             continue
 
-        for mat in obj.data.materials:
-            if not get_material_output_node(mat):
-                raise BakeError(f'Material `{mat.name}` used by object `{obj.name}` '
-                                 'has no output node')
-            mats.add(mat)
+        for obj in cfg.objects:
+            for mat in obj.data.materials:
+                if not get_material_output_node(mat):
+                    raise BakeError(f'Material `{mat.name}` used by object `{obj.name}` '
+                                    'has no output node')
+                mats.add(mat)
 
         cfgs.add(cfg)
 
@@ -276,18 +359,26 @@ def bake_objects_pass(configs, bake_pass, samples=0, max_samples=0):
 
     for cfg in cfgs:
         t_obj_begin = datetime.datetime.now()
-        cfg.obj.select_set(True)
+
+        for obj in cfg.objects:
+            print(f'[{bake_pass.name}] Select object `{obj.name}`')
+            obj.select_set(True)
 
         sz = cfg.size.get_value(bake_pass)
-        img = create_bake_output_image(cfg.obj, bake_pass, sz, alpha=cfg.alpha)
+        img = create_bake_output_image(cfg.output_name, bake_pass, sz, alpha=cfg.alpha)
 
         print(
-            f'[{bake_pass.name}] Baking object `{cfg.obj.name}` to '
+            f'[{bake_pass.name}] Baking `{cfg.output_name}` to '
             f'`{img.filepath_raw}`, {sz[0]}x{sz[1]}')
 
         junknodes = set()
 
-        for mat in cfg.obj.data.materials:
+        mset = set()
+        for obj in cfg.objects:
+            for mat in obj.data.materials:
+                mset.add(mat)
+
+        for mat in mset:
             node = mat.node_tree.nodes.new(type='ShaderNodeTexImage')
             node.image = img
             mat.node_tree.nodes.active = node
@@ -311,7 +402,8 @@ def bake_objects_pass(configs, bake_pass, samples=0, max_samples=0):
         for nodeset, node in junknodes:
             nodeset.remove(node)
 
-        cfg.obj.select_set(False)
+        for obj in cfg.objects:
+            obj.select_set(False)
 
         t_obj_end = datetime.datetime.now()
         print(f'[{bake_pass.name}] Object bake finished in {str(t_obj_end - t_obj_begin)}')
