@@ -26,7 +26,7 @@ def merge_collection(col, objname=None):
         objname = col.name
 
     bpy.ops.object.select_all(action='DESELECT')
-    for obj in col.all_objects:
+    for obj in filter(lambda o: isinstance(o.data, bpy.types.Mesh), col.all_objects):
         obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.join()
@@ -154,8 +154,11 @@ class BakeConfig:
     def __init__(self, object,
                  size=DEFAULT_SIZE, alpha=False, exclude_passes=None, margin=DEFAULT_MARGIN,
                  output_name=None):
-        if output_name is None and hasattr(object, 'name'):
-            output_name = object.name
+        if output_name is None:
+            if hasattr(object, 'name'):
+                output_name = object.name
+            elif isinstance(object, str):
+                output_name = object
 
         self.objects = list(filter(
             lambda o: isinstance(o.data, bpy.types.Mesh), iter_objects(object)))
@@ -280,15 +283,19 @@ class BakePass:
     prepare: Callable[[set, set], None] = dataclasses.field(
         default_factory=lambda: lambda configs, mats: None, repr=False)
 
+    @property
+    def is_denoise_sensible(self):
+        return self.samples != 1
+
     def __hash__(self):
         return id(self)
 
 bake_passes = collections.OrderedDict((
     # NOTE: order matters. prepare functions have side effects!
 
+    ('normal',      BakePass('normal',      'NORMAL',       None)), #, samples=1)),
     ('ambient',     BakePass('ambient',     'COMBINED',     None,       'sRGB')),
     ('ao',          BakePass('ao',          'AO',           None)),
-    ('normal',      BakePass('normal',      'NORMAL',       None, samples=1)),
     ('roughness',   BakePass('roughness',   'ROUGHNESS',    None, samples=1, may_have_alpha=True)),
     ('diffuse',     BakePass('diffuse',     'DIFFUSE',      {'COLOR'},  'sRGB',
                              samples=1, prepare=prepare_diffuse_bake)),
@@ -299,7 +306,7 @@ bake_passes = collections.OrderedDict((
 class BakeError(RuntimeError):
     pass
 
-def bake_objects_pass(configs, bake_pass, samples=0, max_samples=0):
+def bake_objects_pass(configs, bake_pass, samples=0, max_samples=0, denoise=None, normal_samples=1):
     tsets_str = ', '.join(c.output_name for c in configs)
     print(f"Preparing to bake {bake_pass.name} pass for texture sets: {tsets_str}")
 
@@ -349,6 +356,13 @@ def bake_objects_pass(configs, bake_pass, samples=0, max_samples=0):
     if max_samples == 0:
         max_samples = bpy.context.scene.cycles.samples
 
+    if normal_samples == 0:
+        normal_samples = max_samples
+
+    # HACK
+    if bake_pass.name == 'normal':
+        max_samples = min(normal_samples, max_samples)
+
     samples = min(samples, max_samples)
     assert samples > 0
 
@@ -393,8 +407,18 @@ def bake_objects_pass(configs, bake_pass, samples=0, max_samples=0):
         if bake_pass.blender_pass_filter is not None:
             bake_args['pass_filter'] = bake_pass.blender_pass_filter
 
+        prev_denoise = bpy.context.scene.cycles.use_denoising
+
+        if denoise is not None:
+            bpy.context.scene.cycles.use_denoising = bool(denoise)
+
+        if not bake_pass.is_denoise_sensible:
+            bpy.context.scene.cycles.use_denoising = False
+
         with cycles_samples(samples):
             bpy.ops.object.bake(**bake_args)
+
+        bpy.context.scene.cycles.use_denoising = prev_denoise
 
         img.save()
         bpy.data.images.remove(img)
@@ -411,7 +435,7 @@ def bake_objects_pass(configs, bake_pass, samples=0, max_samples=0):
     t_end = datetime.datetime.now()
     print(f'[{bake_pass.name}] Bake pass finished in {str(t_end - t_begin)}')
 
-def bake_objects(*configs, passes=None, samples=0, max_samples=0):
+def bake_objects(*configs, passes=None, samples=0, max_samples=0, normal_samples=1):
     if passes is None:
         passes = tuple(bake_passes.values())
     else:
@@ -429,7 +453,8 @@ def bake_objects(*configs, passes=None, samples=0, max_samples=0):
             configs=configs,
             bake_pass=bpass,
             samples=samples,
-            max_samples=max_samples)
+            max_samples=max_samples,
+            normal_samples=normal_samples)
 
     t_end = datetime.datetime.now()
 

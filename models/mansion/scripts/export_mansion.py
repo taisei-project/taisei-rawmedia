@@ -14,7 +14,6 @@ col_roof = bpy.data.collections['roof']
 cols_mansion = (col_mansion, col_roof)
 cols_all = (col_mansion, col_roof, col_ground)
 
-bpy.ops.object.select_all(action='DESELECT')
 for obj in itertools.chain(*(c.all_objects for c in cols_all)):
     obj.select_set(True)
 
@@ -32,7 +31,7 @@ export_obj('models/mansion.iqm')
 
 bpy.ops.object.select_all(action='DESELECT')
 for obj in col_ground.all_objects:
-    obj.select_set(True)
+   obj.select_set(True)
 export_obj('models/ground.iqm')
 
 # Baseline resolution
@@ -42,13 +41,13 @@ bake_objects(
     {
         'object': col_ground,
         'size': q,
-#        'exclude_passes': {'ao'},
+        'exclude_passes': {'ao'},
     },
     {
         'object': cols_mansion,
         'output_name': 'mansion',
         'size': q,
-#        'exclude_passes': {'ao'},
+        'exclude_passes': {'ao'},
     },
 )
 

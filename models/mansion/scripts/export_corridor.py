@@ -5,20 +5,22 @@ sys.path.append('../utils')
 from export_utils import *
 
 bpy.ops.object.mode_set(mode='OBJECT')
-
 bpy.ops.object.select_all(action='DESELECT')
 
-bpy.data.objects['corridor'].select_set(True)
+corridor_col = bpy.data.collections['corridor']
 
-baketex_names = [
-    'corridor_baked',
-]
-
-bake('normal','NORMAL', baketex_names=baketex_names)
-bake('roughness','ROUGHNESS', baketex_names=baketex_names)
-bake('ambient','COMBINED', baketex_names=baketex_names)
-bake('diffuse','DIFFUSE',pass_filter={'COLOR'}, baketex_names=baketex_names)
+for o in corridor_col.all_objects:
+    o.select_set(True)
 
 export_obj('models/corridor.iqm')
+
+bake_objects(
+    {
+        'object': corridor_col,
+        'size': 2048,
+        'exclude_passes': {'ao'},
+    },
+    normal_samples=64
+)
 
 bpy.ops.wm.quit_blender()
