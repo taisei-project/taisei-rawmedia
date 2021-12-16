@@ -152,7 +152,7 @@ class BakeConfig:
     DEFAULT_MARGIN = 16
 
     def __init__(self, object,
-                 size=DEFAULT_SIZE, alpha=False, exclude_passes=None, margin=DEFAULT_MARGIN,
+                 size=DEFAULT_SIZE, alpha=True, exclude_passes=None, margin=DEFAULT_MARGIN,
                  output_name=None):
         if output_name is None:
             if hasattr(object, 'name'):
@@ -272,6 +272,55 @@ def prepare_diffuse_bake(configs, mats):
 
                 print(f' * {mat.name}: set metallic to 0')
 
+def prepare_alpha_bake(configs, mats):
+    # TODO: this is a copypasta of the depth map pass; generalize somehow
+
+    print('Preparing materials for alpha map bake…')
+
+    enabled_mats = set()
+
+    for mat in mats:
+        out = get_material_output_node(mat)
+        surface_input = out.inputs['Surface']
+
+        for link in surface_input.links:
+            mat.node_tree.links.remove(link)
+
+        # Alpha pass is baked as "emission"
+        # Create a simple emission shader and connect the alpha map group to it
+
+        emit_node = mat.node_tree.nodes.new(type='ShaderNodeEmission')
+        emit_input = emit_node.inputs['Color']
+        emit_input.default_value = [1, 1, 1, 1]
+        emit_output = emit_node.outputs['Emission']
+
+        # Connect emission shader to material output
+        mat.node_tree.links.new(surface_input, emit_output)
+
+        alphamap = find_node_by_label(mat.node_tree, 'Alpha Map')
+        if alphamap is None:
+            print(f' * {mat.name}: create stub emission shader')
+            continue
+
+        alphamap_output = alphamap.outputs['Alpha']
+
+        # Connect alpha map to emission shader
+        mat.node_tree.links.new(emit_input, alphamap_output)
+
+        print(f' * {mat.name}: create emission shader for alpha map')
+        enabled_mats.add(mat)
+
+    for cfg in tuple(configs):
+        skip = True
+        for obj in cfg.objects:
+            if object_uses_one_of_materials(obj, enabled_mats):
+                skip = False
+                break
+
+        if skip:
+            print(f"Texture set `{cfg.output_name}` skipped: no materials have an alpha map")
+            configs.remove(cfg)
+
 @dataclasses.dataclass
 class BakePass:
     name: str = None
@@ -296,11 +345,13 @@ bake_passes = collections.OrderedDict((
     ('normal',      BakePass('normal',      'NORMAL',       None)), #, samples=1)),
     ('ambient',     BakePass('ambient',     'COMBINED',     None,       'sRGB')),
     ('ao',          BakePass('ao',          'AO',           None)),
-    ('roughness',   BakePass('roughness',   'ROUGHNESS',    None, samples=1, may_have_alpha=True)),
+    ('roughness',   BakePass('roughness',   'ROUGHNESS',    None, samples=1)),
     ('diffuse',     BakePass('diffuse',     'DIFFUSE',      {'COLOR'},  'sRGB',
                              samples=1, prepare=prepare_diffuse_bake)),
     ('depth',       BakePass('depth',       'EMIT',         None,
                              samples=1, prepare=prepare_depth_bake)),
+    ('alpha',       BakePass('alpha',       'EMIT',         None,
+                             samples=1, prepare=prepare_alpha_bake)),
 ))
 
 class BakeError(RuntimeError):
