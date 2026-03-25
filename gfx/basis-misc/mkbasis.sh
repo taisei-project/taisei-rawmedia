@@ -69,18 +69,30 @@ GRAY_ALPHA=(
     stage5/spell_lightning.webp
 )
 
+GRAY_UASTC=(
+    fractal_noise.webp
+)
+
 FAIL=0
 
 function make-basis-cmd {
     local dry_run=0
+    local extra_args=""
+    local suffix=""
 
     if [[ "$1" = "--dry-run" ]]; then
         dry_run=1
         shift
     fi
 
+    if [[ "$1" = "--uastc" ]]; then
+        suffix=".zst"
+        extra_args="--uastc"
+        shift
+    fi
+
     local input="$1"
-    local output="$OUT/${input%.*}.basis"
+    local output="$OUT/${input%.*}.basis${suffix}"
 
     if [[ $OVERWRITE -le 0 && -e "$output" ]]; then
         [[ $dry_run -ge 1 ]] && echo "$output: file exists; call with OVERWRITE=1 to overwrite" 1>&2
@@ -94,10 +106,10 @@ function make-basis-cmd {
     shift
 
     if [[ $dry_run -ge 1 ]]; then
-        mkbasis "$input" $@ $GLOBAL_ARGS --dry-run >/dev/null || return 1
+        mkbasis "$input" $@ $extra_args $GLOBAL_ARGS --dry-run >/dev/null || return 1
     fi
 
-    echo mkbasis "$input" $@ $GLOBAL_ARGS -o "$output"
+    echo mkbasis "$input" $@ $extra_args $GLOBAL_ARGS -o "$output"
 }
 
 function make-cmd-list {
@@ -148,8 +160,16 @@ function make-cmd-list {
         let err+=$?
     done
 
+    for x in $GRAY_UASTC; do
+        make-basis-cmd --uastc "$@" $x --linear --r
+        let err+=$?
+    done
+
     return $([[ $err -eq 0 ]])
 }
+
+make-cmd-list
+exit
 
 if [[ $LIST_ONLY -gt 0 ]]; then
     make-cmd-list --dry-run

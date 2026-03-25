@@ -169,7 +169,7 @@ $(TEX_BASIS)/%_ao.basis: $(TEX_BAKED)/%_ao.png
 
 $(TEX_BASIS)/water_floor.basis: textures/water_floor.png
 	mkbasis $< --rgb -o $@
-
+	
 install: $(MODEL_FILES) $(BASIS_FILES)
 	mkdir -p $(TEXTURE_PATH)
 	mkdir -p $(MODEL_PATH)

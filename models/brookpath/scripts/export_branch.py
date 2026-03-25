@@ -12,6 +12,17 @@ obj_branch = bpy.data.objects['branch']
 obj_leaves = bpy.data.objects['leaves']
 
 obj_branch.select_set(True)
+bpy.context.view_layer.objects.active = obj_branch
+for mod in obj_branch.modifiers:
+    bpy.ops.object.modifier_apply(modifier=mod.name)
+
+bpy.ops.object.mode_set(mode='EDIT')
+bpy.ops.mesh.select_all(action='SELECT')
+bpy.ops.uv.smart_project(island_margin=0.001, margin_method='ADD', scale_to_bounds=True, angle_limit=0.35)
+# bpy.ops.uv.lightmap_pack()
+bpy.ops.mesh.select_all(action='DESELECT')
+bpy.ops.object.mode_set(mode='OBJECT')
+
 export_obj('models/branch.iqm')
 obj_branch.select_set(False)
 
